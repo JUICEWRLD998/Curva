@@ -3,6 +3,7 @@ import type { MatchPhase, RoomState } from '@/types/curva'
 import { PulseWave } from './PulseWave'
 import { PulseButton } from './PulseButton'
 import { RoarButton } from './RoarButton'
+import { ChantGrid } from './ChantGrid'
 import { playHit } from '@/lib/audio'
 
 interface Props {
@@ -157,23 +158,11 @@ export function Stand({
           </div>
 
           {/* Chant Circles */}
-          <div className="glass chant-section">
-            <div className="energy-head">
-              <h3>Chant Circles</h3>
-              <span className="text-muted">Join the same chant — erupt together</span>
-            </div>
-            <div className="chant-grid">
-              {room.chantsCatalog.map((c) => {
-                const live = room.chants.find((x) => x.id.startsWith(`${c.id}:`))
-                return (
-                  <button key={c.id} type="button" onClick={() => onChant(c.id)}>
-                    {c.label}
-                    <span>{live ? `${live.count} voices` : 'start / join'}</span>
-                  </button>
-                )
-              })}
-            </div>
-          </div>
+          <ChantGrid
+            catalog={room.chantsCatalog}
+            liveChants={room.chants}
+            onChantClick={onChant}
+          />
 
           {/* Floating Sidebar Triggers */}
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>

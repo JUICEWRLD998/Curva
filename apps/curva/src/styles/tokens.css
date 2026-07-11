@@ -96,8 +96,8 @@
   /* Font Families */
   --font-display: 'Syne', 'Barlow Condensed', system-ui, sans-serif;
   --font-data: 'Barlow Condensed', 'Impact', sans-serif;
-  --font-ui: 'Inter Variable', 'IBM Plex Sans', system-ui, sans-serif;
-  --font-body: 'Inter Variable', 'IBM Plex Sans', system-ui, sans-serif;
+  --font-ui: 'Inter', 'IBM Plex Sans', system-ui, sans-serif;
+  --font-body: 'Inter', 'IBM Plex Sans', system-ui, sans-serif;
   
   /* Font Sizes */
   --text-hero: clamp(64px, 8vw, 96px);

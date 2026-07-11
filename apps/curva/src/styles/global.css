@@ -2,7 +2,7 @@
 @import url('./tokens.css');
 
 /* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400..800&family=Barlow+Condensed:wght@400;600;700;900&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400..900&family=Barlow+Condensed:wght@400;600;700;900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 /* ============================================
    BASE STYLES
@@ -670,11 +670,17 @@ a {
 /* Waveform Canvas */
 .wave {
   width: 100%;
-  height: var(--waveform-height);
+  height: var(--waveform-height); /* 400px from tokens */
   border-radius: var(--radius-lg);
-  background: var(--glass-darkest);
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(61, 255, 154, 0.03), transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(245, 197, 24, 0.03), transparent 50%),
+    var(--glass-darkest);
   border: 1px solid var(--line);
   display: block;
+  box-shadow: 
+    inset 0 2px 12px rgba(0, 0, 0, 0.3),
+    var(--shadow-md);
 }
 
 /* Pulse Feed */
@@ -1063,6 +1069,11 @@ a {
   .wave {
     height: 300px;
   }
+  
+  .eruption-text {
+    font-size: clamp(48px, 10vw, 64px);
+    padding: var(--space-6) var(--space-8);
+  }
 }
 
 /* Small Mobile */
@@ -1078,6 +1089,15 @@ a {
   
   .row2 {
     grid-template-columns: 1fr;
+  }
+  
+  .wave {
+    height: 240px;
+  }
+  
+  .eruption-text {
+    font-size: clamp(36px, 8vw, 48px);
+    padding: var(--space-4) var(--space-6);
   }
 }
 
