@@ -1,0 +1,290 @@
+/**
+ * CURVA Design Tokens v2.0
+ * Stadium-first design system
+ */
+
+:root {
+  /* ============================================
+     SEMANTIC COLOR TOKENS
+     ============================================ */
+  
+  /* Brand Colors */
+  --gold: #f5c518;
+  --gold-bright: #ffe56a;
+  --gold-dim: #c49210;
+  --mint: #3dff9a;
+  --mint-dim: rgba(61, 255, 154, 0.14);
+  --rose: #ff5d6c;
+  --rose-dim: rgba(255, 93, 108, 0.14);
+  
+  /* Energy States */
+  --energy-low: var(--mint);
+  --energy-mid: var(--gold);
+  --energy-high: var(--rose);
+  
+  /* Pitch Layers (Dark Theme) */
+  --pitch-950: #020503;
+  --pitch-900: #030705;
+  --pitch-800: #07140e;
+  --pitch-700: #0b1f16;
+  --pitch-600: #123226;
+  --pitch-500: #1a4a38;
+  
+  /* Stadium Layers (Light Theme - will be set via data-theme) */
+  --stadium-50: #f8fdf9;
+  --stadium-100: #e8f5ec;
+  --stadium-200: #d1ebd9;
+  --stadium-300: #a8d9b8;
+  --stadium-400: #7bc491;
+  --stadium-500: #52a96d;
+  
+  /* Contextual Action States */
+  --action-idle: rgba(245, 197, 24, 0.14);
+  --action-hover: rgba(245, 197, 24, 0.32);
+  --action-active: rgba(245, 197, 24, 0.55);
+  --action-pressed: rgba(245, 197, 24, 0.75);
+  
+  /* Depth & Glass */
+  --glass-dark: rgba(10, 28, 20, 0.72);
+  --glass-darker: rgba(8, 20, 14, 0.85);
+  --glass-darkest: rgba(3, 7, 5, 0.92);
+  
+  --layer-pitch: var(--pitch-900);
+  --layer-stand: var(--glass-dark);
+  --layer-floodlight: rgba(245, 197, 24, 0.08);
+  --layer-spotlight: rgba(255, 255, 255, 0.95);
+  
+  /* Lines & Borders */
+  --line: rgba(245, 197, 24, 0.14);
+  --line-strong: rgba(245, 197, 24, 0.32);
+  --line-mint: rgba(61, 255, 154, 0.28);
+  --line-white: rgba(255, 255, 255, 0.08);
+  
+  /* Text Colors */
+  --text-primary: #f4faf6;
+  --text-secondary: #8ea497;
+  --text-inverse: #0a1008;
+  --text-gold: var(--gold);
+  --text-mint: var(--mint);
+  
+  /* Background */
+  --bg-base: var(--pitch-900);
+  --bg-panel: var(--glass-dark);
+  --bg-input: rgba(3, 7, 5, 0.55);
+  --bg-overlay: rgba(0, 0, 0, 0.6);
+  
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 24px 80px rgba(0, 0, 0, 0.45);
+  --shadow-glow-gold: 0 0 40px rgba(245, 197, 24, 0.3);
+  --shadow-glow-mint: 0 0 40px rgba(61, 255, 154, 0.3);
+  
+  /* Border Radius */
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 22px;
+  --radius-2xl: 28px;
+  --radius-full: 9999px;
+  
+  /* ============================================
+     TYPOGRAPHY SYSTEM
+     ============================================ */
+  
+  /* Font Families */
+  --font-display: 'Syne', 'Barlow Condensed', system-ui, sans-serif;
+  --font-data: 'Barlow Condensed', 'Impact', sans-serif;
+  --font-ui: 'Inter Variable', 'IBM Plex Sans', system-ui, sans-serif;
+  --font-body: 'Inter Variable', 'IBM Plex Sans', system-ui, sans-serif;
+  
+  /* Font Sizes */
+  --text-hero: clamp(64px, 8vw, 96px);
+  --text-scoreboard: clamp(48px, 6vw, 72px);
+  --text-display: clamp(32px, 4vw, 48px);
+  --text-heading: clamp(24px, 3vw, 32px);
+  --text-subheading: clamp(18px, 2.5vw, 24px);
+  --text-action: 20px;
+  --text-base: 15px;
+  --text-sm: 13px;
+  --text-xs: 11px;
+  
+  /* Font Weights */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-black: 900;
+  
+  /* Letter Spacing */
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.04em;
+  --tracking-wider: 0.08em;
+  --tracking-widest: 0.16em;
+  
+  /* Line Heights */
+  --leading-none: 1;
+  --leading-tight: 1.1;
+  --leading-snug: 1.3;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.6;
+  
+  /* ============================================
+     SPACING SYSTEM (8px base grid)
+     ============================================ */
+  
+  --space-1: 4px;   /* micro */
+  --space-2: 8px;   /* tight */
+  --space-3: 12px;  /* compact */
+  --space-4: 16px;  /* base */
+  --space-5: 20px;  /* comfortable */
+  --space-6: 24px;  /* comfortable */
+  --space-8: 32px;  /* loose */
+  --space-10: 40px; /* spacious */
+  --space-12: 48px; /* dramatic */
+  --space-16: 64px; /* stadium */
+  --space-20: 80px; /* massive */
+  
+  /* ============================================
+     COMPONENT SIZES
+     ============================================ */
+  
+  --btn-sm-height: 36px;
+  --btn-md-height: 44px;
+  --btn-lg-height: 52px;
+  
+  --pulse-btn-size: 140px;
+  --roar-btn-size: 200px;
+  
+  --sidebar-width: 320px;
+  --topbar-height: 68px;
+  
+  --waveform-height: 400px;
+  
+  /* ============================================
+     ANIMATION TIMINGS
+     ============================================ */
+  
+  --duration-instant: 0.1s;
+  --duration-fast: 0.15s;
+  --duration-normal: 0.25s;
+  --duration-slow: 0.4s;
+  --duration-slower: 0.6s;
+  
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-elastic: cubic-bezier(0.34, 1.56, 0.64, 1);
+  
+  /* ============================================
+     Z-INDEX LAYERS
+     ============================================ */
+  
+  --z-base: 0;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+  --z-tooltip: 600;
+}
+
+/* ============================================
+   LIGHT THEME (Noon Stadium)
+   ============================================ */
+
+[data-theme="light"] {
+  /* Invert pitch to stadium */
+  --pitch-950: var(--stadium-50);
+  --pitch-900: var(--stadium-100);
+  --pitch-800: var(--stadium-200);
+  --pitch-700: var(--stadium-300);
+  --pitch-600: var(--stadium-400);
+  --pitch-500: var(--stadium-500);
+  
+  /* Adjust glass for light mode */
+  --glass-dark: rgba(255, 255, 255, 0.65);
+  --glass-darker: rgba(255, 255, 255, 0.8);
+  --glass-darkest: rgba(255, 255, 255, 0.92);
+  
+  --layer-pitch: var(--stadium-100);
+  --layer-stand: rgba(255, 255, 255, 0.7);
+  
+  /* Adjust text for light mode */
+  --text-primary: #0a1c14;
+  --text-secondary: #5a7268;
+  --text-inverse: #f4faf6;
+  
+  /* Adjust lines */
+  --line: rgba(18, 50, 38, 0.18);
+  --line-strong: rgba(18, 50, 38, 0.32);
+  --line-white: rgba(0, 0, 0, 0.08);
+  
+  /* Adjust backgrounds */
+  --bg-base: var(--stadium-100);
+  --bg-panel: rgba(255, 255, 255, 0.8);
+  --bg-input: rgba(255, 255, 255, 0.6);
+  --bg-overlay: rgba(255, 255, 255, 0.85);
+  
+  /* Adjust shadows for light */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.16);
+  --shadow-xl: 0 24px 80px rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+.display {
+  font-family: var(--font-display);
+  font-weight: var(--weight-black);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+}
+
+.data {
+  font-family: var(--font-data);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-wide);
+  line-height: var(--leading-none);
+}
+
+.ui-text {
+  font-family: var(--font-ui);
+  font-weight: var(--weight-medium);
+}
+
+.body-text {
+  font-family: var(--font-body);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-relaxed);
+}
+
+.text-muted {
+  color: var(--text-secondary);
+}
+
+.text-gold {
+  color: var(--text-gold);
+}
+
+.text-mint {
+  color: var(--text-mint);
+}
+
+.glass {
+  background: var(--layer-stand);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  backdrop-filter: blur(16px);
+}
+
+.glass-strong {
+  background: var(--glass-darker);
+  border: 1px solid var(--line-strong);
+}
