@@ -707,10 +707,13 @@ a {
 .roar-hero {
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 100%;
-  padding: var(--space-4) 0;
+  padding: var(--space-6) 0;
+  margin: var(--space-4) 0;
 }
 
+/* Legacy PulseButton in roar-hero (keeping for backward compatibility) */
 .roar-hero .pulse-button {
   width: 200px;
   height: 200px;
@@ -948,6 +951,11 @@ a {
     gap: var(--space-3);
   }
   
+  .roar-hero {
+    padding: var(--space-3) 0;
+    margin: var(--space-2) 0;
+  }
+  
   .roar-hero .pulse-button {
     width: 180px;
     height: 180px;
@@ -1028,6 +1036,11 @@ a {
   .pulse-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: var(--space-3);
+  }
+  
+  .roar-hero {
+    padding: var(--space-4) 0;
+    margin: var(--space-3) 0;
   }
   
   .roar-hero .pulse-button {
