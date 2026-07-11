@@ -29,13 +29,14 @@ const REACTIONS: Array<{
   label: string
   intensity: number
   icon: string
+  energyCost: number
   roar?: boolean
 }> = [
-  { kind: 'goal', label: 'GOAL', intensity: 5, icon: '⚽' },
-  { kind: 'save', label: 'SAVE', intensity: 3, icon: '🧤' },
-  { kind: 'foul', label: 'FOUL', intensity: 2, icon: '🚨' },
-  { kind: 'card', label: 'CARD', intensity: 2, icon: '🟨' },
-  { kind: 'roar', label: 'ROAR', intensity: 4, icon: '⚡', roar: true }
+  { kind: 'goal', label: 'GOAL', intensity: 5, icon: '⚽', energyCost: 30 },
+  { kind: 'save', label: 'SAVE', intensity: 3, icon: '🧤', energyCost: 20 },
+  { kind: 'foul', label: 'FOUL', intensity: 2, icon: '🚨', energyCost: 15 },
+  { kind: 'card', label: 'CARD', intensity: 2, icon: '🟨', energyCost: 15 },
+  { kind: 'roar', label: 'ROAR', intensity: 4, icon: '⚡', energyCost: 40, roar: true }
 ]
 
 export function Stand({
@@ -135,6 +136,7 @@ export function Stand({
                 label={r.label}
                 intensity={r.intensity}
                 icon={r.icon}
+                energyCost={r.energyCost}
                 onClick={() => {
                   onPulse(r.kind, r.intensity)
                   setBump((b) => b + 1)

@@ -62,6 +62,10 @@
 .roar-button.pressed {
   transform: translateY(0) scale(0.97);
   border-color: var(--gold-dim);
+  background: 
+    radial-gradient(circle at 30% 30%, var(--action-active), transparent 70%),
+    linear-gradient(135deg, var(--gold), var(--mint)),
+    var(--glass-darker);
 }
 
 /* Disabled State */
@@ -122,6 +126,39 @@
   border-radius: 50%;
   opacity: 0.4;
   filter: blur(1px);
+}
+
+/* Energy Gauge Ring */
+.energy-gauge-ring {
+  position: absolute;
+  inset: -6px;
+  width: calc(100% + 12px);
+  height: calc(100% + 12px);
+  transform: rotate(-90deg);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.energy-gauge-bg {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 3;
+  opacity: 0.3;
+}
+
+.energy-gauge-fill {
+  fill: none;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: 289; /* 2 * PI * 46 */
+  stroke-dashoffset: 289;
+  filter: drop-shadow(0 0 12px currentColor);
+  animation: energyPulse 2s ease-in-out infinite;
+}
+
+@keyframes energyPulse {
+  0%, 100% { opacity: 0.9; }
+  50% { opacity: 1; stroke-width: 5; }
 }
 
 /* Expanding Energy Ring on Press */

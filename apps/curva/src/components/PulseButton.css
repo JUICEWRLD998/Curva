@@ -136,6 +136,81 @@
   filter: blur(1px);
 }
 
+/* Energy Cost Bar */
+.energy-cost-bar {
+  position: absolute;
+  bottom: 28px;
+  left: 8px;
+  right: 8px;
+  height: 3px;
+  background: var(--line);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.energy-cost-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--mint), var(--gold));
+  border-radius: inherit;
+  transition: width var(--duration-normal) var(--ease-out);
+  box-shadow: 0 0 8px currentColor;
+}
+
+/* Cooldown Progress Ring */
+.cooldown-ring {
+  position: absolute;
+  inset: -4px;
+  width: calc(100% + 8px);
+  height: calc(100% + 8px);
+  transform: rotate(-90deg);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.cooldown-ring-bg {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 2;
+  opacity: 0.3;
+}
+
+.cooldown-ring-progress {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 301.6; /* 2 * PI * 48 */
+  stroke-dashoffset: 301.6;
+  filter: drop-shadow(0 0 8px var(--gold));
+  animation: ringGlow 1.5s ease-in-out infinite;
+}
+
+@keyframes ringGlow {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
+
+/* Cooldown Timer Display */
+.cooldown-timer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: inherit;
+  backdrop-filter: blur(4px);
+  z-index: 5;
+}
+
+.cooldown-timer span {
+  font-family: var(--font-data);
+  font-size: 24px;
+  font-weight: var(--weight-black);
+  color: var(--gold);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
 /* Responsive Adjustments */
 @media (max-width: 768px) {
   .pulse-button {
@@ -158,6 +233,16 @@
   .intensity-dot {
     width: 5px;
     height: 5px;
+  }
+
+  .energy-cost-bar {
+    bottom: 24px;
+    left: 6px;
+    right: 6px;
+  }
+
+  .cooldown-timer span {
+    font-size: 20px;
   }
 }
 
@@ -183,6 +268,17 @@
   .intensity-dot {
     width: 4px;
     height: 4px;
+  }
+
+  .energy-cost-bar {
+    bottom: 20px;
+    left: 5px;
+    right: 5px;
+    height: 2px;
+  }
+
+  .cooldown-timer span {
+    font-size: 16px;
   }
 }
 

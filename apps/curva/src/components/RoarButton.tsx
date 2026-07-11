@@ -5,10 +5,11 @@ import './RoarButton.css'
 interface Props {
   disabled?: boolean
   cooldown?: number // Cooldown in seconds (optional)
+  energy?: number // Current energy level (0-100)
   onClick: () => void
 }
 
-export function RoarButton({ disabled = false, cooldown = 0, onClick }: Props) {
+export function RoarButton({ disabled = false, cooldown = 0, energy = 100, onClick }: Props) {
   const [isPressed, setIsPressed] = useState(false)
   const [timeRemaining, setTimeRemaining] = useState(0)
 
@@ -39,6 +40,13 @@ export function RoarButton({ disabled = false, cooldown = 0, onClick }: Props) {
   }
 
   const isDisabled = disabled || timeRemaining > 0
+  
+  // Energy color based on level
+  const getEnergyColor = () => {
+    if (energy >= 70) return 'var(--mint)'
+    if (energy >= 40) return 'var(--gold)'
+    return 'var(--rose)'
+  }
 
   // Generate particle positions (12 particles in a circle)
   const particles = Array.from({ length: 12 }).map((_, i) => {
@@ -54,15 +62,41 @@ export function RoarButton({ disabled = false, cooldown = 0, onClick }: Props) {
       disabled={isDisabled}
       whileHover={{ scale: isDisabled ? 1 : 1.04, y: isDisabled ? 0 : -6 }}
       whileTap={{ scale: isDisabled ? 1 : 0.96 }}
+      style={{
+        '--energy-color': getEnergyColor(),
+      } as React.CSSProperties}
     >
       {/* Base Glow */}
       <div className="roar-glow" />
       
-      {/* Static Energy Ring */}
-      <div className="energy-rings">
-        <div className="energy-ring-static" />
-      </div>
-
+      {/* Energy Gauge Ring */}
+      <svg className="energy-gauge-ring" viewBox="0 0 100 100">
+        <circle
+          className="energy-gauge-bg"
+          cx="50"
+          cy="50"
+          r="46"
+        />
+        <motion.circle
+          className="energy-gauge-fill"
+          cx="50"
+          cy="50"
+          r="46"
+          initial={{ pathLength: 0 }}
+          animate={{ 
+            pathLength: energy / 100,
+            rotate: [0, 360]
+          }}
+          transition={{
+            pathLength: { duration: 0.5, ease: 'easeOut' },
+            rotate: { duration: 20, ease: 'linear', repeat: Infinity }
+          }}
+          style={{
+            stroke: getEnergyColor(),
+          }}
+        />
+      </svg>
+      
       {/* Expanding Energy Ring on Press */}
       <AnimatePresence>
         {isPressed && (
