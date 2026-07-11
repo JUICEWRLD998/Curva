@@ -6,6 +6,7 @@ import { RoarButton } from './RoarButton'
 import { ChantGrid } from './ChantGrid'
 import { FloatingSidebar } from './FloatingSidebar'
 import { Scoreboard } from './Scoreboard'
+import { EruptionOverlay } from './EruptionOverlay'
 import { playHit } from '@/lib/audio'
 
 interface Props {
@@ -340,14 +341,13 @@ export function Stand({
         </div>
       </FloatingSidebar>
 
-      {/* Eruption Overlay */}
-      {eruption && (
-        <div className="eruption">
-          <div className="eruption-text">
-            ERUPTION · {eruption}
-          </div>
-        </div>
-      )}
+      {/* Eruption Overlay - Full Screen Celebration */}
+      <EruptionOverlay
+        chantLabel={eruption}
+        onComplete={() => {
+          // Eruption will be cleared by parent component
+        }}
+      />
     </>
   )
 }

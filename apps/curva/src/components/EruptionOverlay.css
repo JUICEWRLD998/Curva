@@ -1,0 +1,169 @@
+/**
+ * EruptionOverlay - Full-screen chant eruption celebration
+ */
+
+.eruption-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Background Flash */
+.eruption-flash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at center,
+    rgba(61, 255, 154, 0.6) 0%,
+    rgba(245, 197, 24, 0.4) 40%,
+    transparent 70%
+  );
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Confetti Container */
+.confetti-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.confetti-particle {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  box-shadow: 0 0 12px currentColor;
+}
+
+/* Eruption Content */
+.eruption-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.eruption-icon {
+  font-size: 120px;
+  line-height: 1;
+  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.4));
+}
+
+.eruption-title {
+  font-family: var(--font-data);
+  font-size: clamp(64px, 12vw, 120px);
+  font-weight: var(--weight-black);
+  letter-spacing: var(--tracking-wider);
+  line-height: var(--leading-none);
+  text-transform: uppercase;
+  background: linear-gradient(135deg, var(--gold-bright), var(--mint));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 4px 32px rgba(245, 197, 24, 0.6);
+  filter: drop-shadow(0 4px 32px rgba(61, 255, 154, 0.4));
+  margin: 0;
+}
+
+.eruption-chant {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 6vw, 56px);
+  font-weight: var(--weight-black);
+  color: var(--text-primary);
+  text-shadow: 
+    0 2px 16px rgba(0, 0, 0, 0.6),
+    0 0 40px rgba(245, 197, 24, 0.4);
+  margin: 0;
+  padding: var(--space-4) var(--space-6);
+  border-radius: var(--radius-2xl);
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  border: 2px solid var(--gold);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 0 60px rgba(245, 197, 24, 0.3);
+}
+
+.eruption-subtitle {
+  font-family: var(--font-ui);
+  font-size: var(--text-subheading);
+  font-weight: var(--weight-bold);
+  color: var(--mint);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+/* Radial Burst Lines */
+.burst-lines {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.burst-line {
+  position: absolute;
+  width: 4px;
+  height: 50%;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(245, 197, 24, 0.8) 20%,
+    rgba(61, 255, 154, 0.6) 100%
+  );
+  transform-origin: 50% 100%;
+  filter: blur(2px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .eruption-icon {
+    font-size: 80px;
+  }
+
+  .eruption-content {
+    padding: var(--space-6);
+  }
+
+  .eruption-chant {
+    padding: var(--space-3) var(--space-4);
+  }
+}
+
+@media (max-width: 480px) {
+  .eruption-icon {
+    font-size: 64px;
+  }
+
+  .confetti-particle {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .eruption-flash,
+  .confetti-particle,
+  .burst-line,
+  .eruption-icon {
+    animation: none !important;
+  }
+  
+  .eruption-content {
+    transform: none !important;
+  }
+}
