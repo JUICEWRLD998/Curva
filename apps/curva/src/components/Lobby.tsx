@@ -1,5 +1,7 @@
 import { FormEvent, useState } from 'react'
+import { motion } from 'framer-motion'
 import type { Identity, MatchMeta } from '@/types/curva'
+import { lobbyAnimations, cardVariants } from '@/lib/motion'
 
 interface Props {
   identity: Identity
@@ -36,19 +38,28 @@ export function Lobby({ identity, onSaveProfile, onCreate, onJoin }: Props) {
   }
 
   return (
-    <div className="lobby">
+    <motion.div 
+      className="lobby"
+      {...lobbyAnimations.background}
+    >
       {/* Hero Section - Centered, Stadium-Scale */}
-      <section className="hero">
+      <motion.section 
+        className="hero"
+        {...lobbyAnimations.hero}
+      >
         <p className="eyebrow">Peer-to-peer · Zero servers · Pure football</p>
         <h1>The stand has no server.</h1>
         <p>
           Create a room, share a code, become one organism when the ball hits the net. 
           Hyperswarm pulse reactions, coordinated chants, sealed predictions, immortal match capsules.
         </p>
-      </section>
+      </motion.section>
 
       {/* Pitch Visualization - Stadium Feature Card */}
-      <div className="glass pitch-card">
+      <motion.div 
+        className="glass pitch-card"
+        {...lobbyAnimations.pitchCard}
+      >
         <div className="pitch-lines" aria-hidden="true" />
         <div className="copy">
           <p className="eyebrow">Built for the tournament moment</p>
@@ -72,12 +83,20 @@ export function Lobby({ identity, onSaveProfile, onCreate, onJoin }: Props) {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Action Cards - Horizontal Flow with Visual Hierarchy */}
       <div className="action-cards">
         {/* Create Room Card - PRIMARY ACTION */}
-        <form className="glass panel panel-primary" onSubmit={create}>
+        <motion.form 
+          className="glass panel panel-primary" 
+          onSubmit={create}
+          custom={0}
+          variants={cardVariants}
+          initial="hidden"
+          animate="visible"
+          whileHover="hover"
+        >
           <div className="panel-badge">Primary</div>
           <h3>Open a Curva</h3>
           <p className="panel-desc">Host a new room on the Hyperswarm</p>
@@ -116,10 +135,18 @@ export function Lobby({ identity, onSaveProfile, onCreate, onJoin }: Props) {
           <button className="btn btn-primary btn-lg" type="submit">
             Create Room Code
           </button>
-        </form>
+        </motion.form>
 
         {/* Join Room Card - SECONDARY ACTION */}
-        <form className="glass panel panel-secondary" onSubmit={join}>
+        <motion.form 
+          className="glass panel panel-secondary" 
+          onSubmit={join}
+          custom={1}
+          variants={cardVariants}
+          initial="hidden"
+          animate="visible"
+          whileHover="hover"
+        >
           <div className="panel-badge">Join</div>
           <h3>Enter the Stand</h3>
           <p className="panel-desc">Connect to an existing curva</p>
@@ -144,10 +171,18 @@ export function Lobby({ identity, onSaveProfile, onCreate, onJoin }: Props) {
           <button className="btn btn-mint btn-lg" type="submit">
             Join Room
           </button>
-        </form>
+        </motion.form>
 
         {/* Profile Card - TERTIARY ACTION */}
-        <form className="glass panel panel-tertiary" onSubmit={saveProfile}>
+        <motion.form 
+          className="glass panel panel-tertiary" 
+          onSubmit={saveProfile}
+          custom={2}
+          variants={cardVariants}
+          initial="hidden"
+          animate="visible"
+          whileHover="hover"
+        >
           <div className="panel-badge">Profile</div>
           <h3>Your Kit</h3>
           <p className="panel-desc">Identity shown to peers</p>
@@ -194,8 +229,8 @@ export function Lobby({ identity, onSaveProfile, onCreate, onJoin }: Props) {
           <button className="btn btn-ghost" type="submit">
             Save Kit
           </button>
-        </form>
+        </motion.form>
       </div>
-    </div>
+    </motion.div>
   )
 }

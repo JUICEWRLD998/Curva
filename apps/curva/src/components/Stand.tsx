@@ -1,4 +1,5 @@
 import { FormEvent, useMemo, useState } from 'react'
+import { motion } from 'framer-motion'
 import type { MatchPhase, RoomState } from '@/types/curva'
 import { PulseWave } from './PulseWave'
 import { PulseButton } from './PulseButton'
@@ -9,7 +10,7 @@ import { Scoreboard } from './Scoreboard'
 import { EruptionOverlay } from './EruptionOverlay'
 import { Toast } from './Toast'
 import { playHit } from '@/lib/audio'
-import { triggerHaptic, triggerScreenShake } from '@/lib/motion'
+import { triggerHaptic, triggerScreenShake, standAnimations } from '@/lib/motion'
 
 interface Props {
   room: RoomState
@@ -99,20 +100,27 @@ export function Stand({
 
       <div className="stand">
         {/* Full-Width Scoreboard - STADIUM SCALE */}
-        <Scoreboard
-          home={room.matchMeta?.home || 'Home'}
-          away={room.matchMeta?.away || 'Away'}
-          homeScore={room.phase === 'prematch' ? undefined : 0}
-          awayScore={room.phase === 'prematch' ? undefined : 0}
-          phase={room.phase}
-          possession={room.phase === 'live' ? { home: 55, away: 45 } : undefined}
-          onPhaseChange={onPhase}
-        />
+        <motion.div
+          {...standAnimations.scoreboard}
+        >
+          <Scoreboard
+            home={room.matchMeta?.home || 'Home'}
+            away={room.matchMeta?.away || 'Away'}
+            homeScore={room.phase === 'prematch' ? undefined : 0}
+            awayScore={room.phase === 'prematch' ? undefined : 0}
+            phase={room.phase}
+            possession={room.phase === 'live' ? { home: 55, away: 45 } : undefined}
+            onPhaseChange={onPhase}
+          />
+        </motion.div>
 
         {/* Main Content Area - Centered */}
         <div className="stand-main">
           {/* Energy Visualization */}
-          <div className="glass energy-wrap">
+          <motion.div 
+            className="glass energy-wrap"
+            {...standAnimations.waveform}
+          >
             <div className="energy-head">
               <h3>Crowd Pulse</h3>
               <span className="energy-num">{room.energy}</span>
@@ -132,13 +140,26 @@ export function Stand({
                 </span>
               ))}
             </div>
-          </div>
+          </motion.div>
 
           {/* Pulse Reaction Buttons */}
           <div className="pulse-grid">
-            {REACTIONS.filter(r => !r.roar).map((r) => (
-              <PulseButton
+            {REACTIONS.filter(r => !r.roar).map((r, i) => (
+              <motion.div
                 key={r.kind}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ 
+                  opacity: 1, 
+                  scale: 1,
+                }}
+                transition={{
+                  type: 'spring',
+                  stiffness: 400,
+                  damping: 10,
+                  delay: 0.3 + i * 0.1,
+                }}
+              >
+                <PulseButton
                 kind={r.kind}
                 label={r.label}
                 intensity={r.intensity}
@@ -162,6 +183,7 @@ export function Stand({
                   setToastIcon(r.icon)
                 }}
               />
+              </motion.div>
             ))}
           </div>
 
