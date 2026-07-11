@@ -9,7 +9,7 @@ import { FloatingSidebar } from './FloatingSidebar'
 import { Scoreboard } from './Scoreboard'
 import { EruptionOverlay } from './EruptionOverlay'
 import { Toast } from './Toast'
-import { playHit } from '@/lib/audio'
+import { playHit, playGoal, playSave, playFoul, playRoar, playEruption } from '@/lib/audio'
 import { triggerHaptic, triggerScreenShake, standAnimations } from '@/lib/motion'
 
 interface Props {
@@ -168,7 +168,23 @@ export function Stand({
                 onClick={() => {
                   onPulse(r.kind, r.intensity)
                   setBump((b) => b + 1)
-                  playHit(r.kind === 'goal' ? 'hard' : 'soft')
+                  
+                  // Play appropriate sound
+                  switch (r.kind) {
+                    case 'goal':
+                      playGoal()
+                      break
+                    case 'save':
+                      playSave()
+                      break
+                    case 'foul':
+                    case 'yellow':
+                    case 'red':
+                      playFoul()
+                      break
+                    default:
+                      playHit('soft')
+                  }
                   
                   // Haptic feedback
                   triggerHaptic(r.intensity >= 5 ? 'heavy' : r.intensity >= 3 ? 'medium' : 'light')
@@ -194,7 +210,7 @@ export function Stand({
               onClick={() => {
                 onPulse('roar', 4)
                 setBump((b) => b + 1)
-                playHit('hard')
+                playRoar()
                 
                 // Trigger heavy haptic and screen shake
                 triggerHaptic('heavy')
