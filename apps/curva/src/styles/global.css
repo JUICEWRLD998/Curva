@@ -279,6 +279,42 @@ a {
   background: var(--rose-dim);
 }
 
+/* New Toast Notification (Top-Right for Peer Events) */
+.toast-notification {
+  position: fixed;
+  top: calc(var(--topbar-height) + var(--space-4));
+  right: var(--space-4);
+  z-index: var(--z-toast);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-lg);
+  background: var(--glass-darkest);
+  border: 2px solid var(--toast-color, var(--gold));
+  box-shadow: 
+    var(--shadow-xl),
+    0 0 30px var(--toast-color, rgba(245, 197, 24, 0.3));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  min-width: 200px;
+  max-width: min(90vw, 400px);
+}
+
+.toast-icon {
+  font-size: 28px;
+  line-height: 1;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
+}
+
+.toast-message {
+  font-family: var(--font-ui);
+  font-size: var(--text-base);
+  font-weight: var(--weight-bold);
+  color: var(--text-primary);
+  line-height: var(--leading-snug);
+}
+
 /* ============================================
    BOOT SCREEN
    ============================================ */
@@ -985,7 +1021,7 @@ a {
    ANIMATION EFFECTS
    ============================================ */
 
-/* Screen Shake Effect */
+/* Screen Shake Effects */
 @keyframes screenShake {
   0%, 100% { transform: translate(0, 0); }
   10% { transform: translate(-2px, -2px); }
@@ -999,8 +1035,36 @@ a {
   90% { transform: translate(-1px, -1px); }
 }
 
+@keyframes screenShakeLight {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(-1px, -1px); }
+  50% { transform: translate(1px, 1px); }
+  75% { transform: translate(-1px, 1px); }
+}
+
+@keyframes screenShakeHeavy {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-4px, -3px); }
+  20% { transform: translate(3px, 4px); }
+  30% { transform: translate(-3px, 3px); }
+  40% { transform: translate(4px, -3px); }
+  50% { transform: translate(-3px, -4px); }
+  60% { transform: translate(3px, 3px); }
+  70% { transform: translate(-4px, 4px); }
+  80% { transform: translate(3px, -3px); }
+  90% { transform: translate(-2px, -2px); }
+}
+
 body.screen-shake {
   animation: screenShake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+body.screen-shake-light {
+  animation: screenShakeLight 0.3s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+body.screen-shake-heavy {
+  animation: screenShakeHeavy 0.7s cubic-bezier(0.36, 0.07, 0.19, 0.97);
 }
 
 /* ============================================

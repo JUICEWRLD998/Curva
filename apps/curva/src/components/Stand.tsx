@@ -7,7 +7,9 @@ import { ChantGrid } from './ChantGrid'
 import { FloatingSidebar } from './FloatingSidebar'
 import { Scoreboard } from './Scoreboard'
 import { EruptionOverlay } from './EruptionOverlay'
+import { Toast } from './Toast'
 import { playHit } from '@/lib/audio'
+import { triggerHaptic, triggerScreenShake } from '@/lib/motion'
 
 interface Props {
   room: RoomState
@@ -59,6 +61,10 @@ export function Stand({
   // Floating sidebar states
   const [isPeersOpen, setIsPeersOpen] = useState(false)
   const [isSealsOpen, setIsSealsOpen] = useState(false)
+  
+  // Toast notification state
+  const [toastMessage, setToastMessage] = useState<string | null>(null)
+  const [toastIcon, setToastIcon] = useState<string>('')
 
   const title = useMemo(
     () => `${room.matchMeta?.home || 'Home'} vs ${room.matchMeta?.away || 'Away'}`,
@@ -142,6 +148,18 @@ export function Stand({
                   onPulse(r.kind, r.intensity)
                   setBump((b) => b + 1)
                   playHit(r.kind === 'goal' ? 'hard' : 'soft')
+                  
+                  // Haptic feedback
+                  triggerHaptic(r.intensity >= 5 ? 'heavy' : r.intensity >= 3 ? 'medium' : 'light')
+                  
+                  // Screen shake for high intensity
+                  if (r.intensity >= 5) {
+                    triggerScreenShake('light')
+                  }
+                  
+                  // Toast notification
+                  setToastMessage(`You fired ${r.label}`)
+                  setToastIcon(r.icon)
                 }}
               />
             ))}
@@ -155,9 +173,14 @@ export function Stand({
                 onPulse('roar', 4)
                 setBump((b) => b + 1)
                 playHit('hard')
-                // Trigger screen shake
-                document.body.classList.add('screen-shake')
-                setTimeout(() => document.body.classList.remove('screen-shake'), 500)
+                
+                // Trigger heavy haptic and screen shake
+                triggerHaptic('heavy')
+                triggerScreenShake('medium')
+                
+                // Toast notification
+                setToastMessage('You fired ROAR')
+                setToastIcon('⚡')
               }}
             />
           </div>
@@ -340,6 +363,13 @@ export function Stand({
           )}
         </div>
       </FloatingSidebar>
+
+      {/* Toast Notifications */}
+      <Toast
+        message={toastMessage}
+        icon={toastIcon}
+        onClose={() => setToastMessage(null)}
+      />
 
       {/* Eruption Overlay - Full Screen Celebration */}
       <EruptionOverlay
