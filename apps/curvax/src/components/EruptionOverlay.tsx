@@ -134,7 +134,7 @@ export function EruptionOverlay({ chantLabel, onComplete }: Props) {
               animate={{ opacity: [0, 1, 1, 0] }}
               transition={{ delay: 0.5, duration: 1.5 }}
             >
-              The curva ROARS as one!
+              The curvax ROARS as one!
             </motion.div>
           </motion.div>
 

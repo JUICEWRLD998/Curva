@@ -1,7 +1,7 @@
 {
-  "name": "curva",
+  "name": "curvax",
   "version": "1.0.0",
-  "description": "CURVA — peer-to-peer matchday stands on the Pears stack",
+  "description": "CURVAX — peer-to-peer matchday stands on the Pears stack",
   "main": "electron/main.cjs",
   "private": true,
   "scripts": {

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import type { MatchPhase } from '@/types/curva'
+import type { MatchPhase } from '@/types/curvax'
 import { playClick } from '@/lib/audio'
 import './Scoreboard.css'
 

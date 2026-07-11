@@ -1,10 +1,10 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { useCurva } from '@/hooks/useCurva'
+import { useCurvax } from '@/hooks/useCurvax'
 import { Lobby } from '@/components/Lobby'
 import { Stand } from '@/components/Stand'
 
 export default function App() {
-  const { ready, room, identity, toast, eruption, bridgeMissing, send, showToast } = useCurva()
+  const { ready, room, identity, toast, eruption, bridgeMissing, send, showToast } = useCurvax()
 
   if (!ready) {
     return (
@@ -12,7 +12,7 @@ export default function App() {
         <div className="boot">
           <div className="mark">C</div>
           <h1 className="display" style={{ fontSize: 56, margin: '8px 0 4px' }}>
-            CURVA
+            CURVAX
           </h1>
           <p className="muted">Waking the swarm…</p>
         </div>
@@ -33,7 +33,7 @@ export default function App() {
             <div className="brand">
               <div className="mark sm">C</div>
               <div>
-                <strong>CURVA</strong>
+                <strong>CURVAX</strong>
                 <span className="muted tiny">P2P matchday stands · Pears stack</span>
               </div>
             </div>
@@ -44,7 +44,7 @@ export default function App() {
           </header>
           {bridgeMissing ? (
             <div className="bridge-banner" role="alert">
-              UI preview mode — start with <b>npm run dev</b> in <code>apps/curva</code> for real Hyperswarm.
+              UI preview mode — start with <b>npm run dev</b> in <code>apps/curvax</code> for real Hyperswarm.
             </div>
           ) : null}
           <main id="main-content" role="main">

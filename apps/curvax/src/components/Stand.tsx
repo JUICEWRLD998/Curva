@@ -1,6 +1,6 @@
 import { FormEvent, useMemo, useState } from 'react'
 import { motion } from 'framer-motion'
-import type { MatchPhase, RoomState } from '@/types/curva'
+import type { MatchPhase, RoomState } from '@/types/curvax'
 import { PulseWave } from './PulseWave'
 import { PulseButton } from './PulseButton'
 import { RoarButton } from './RoarButton'
@@ -91,7 +91,7 @@ export function Stand({
         <div className="stand-meta">
           <div className="chip live-chip">
             <span className="dot" />
-            {room.peerCount} in the curva
+            {room.peerCount} in the curvax
           </div>
           <button className="btn btn-ghost btn-sm" type="button" onClick={() => {
             playClick()
@@ -287,7 +287,7 @@ export function Stand({
         title="The Stand"
       >
         <div className="sidebar-section">
-          <h4>Fans in the Curva</h4>
+          <h4>Fans in the Curvax</h4>
           <p className="text-muted">
             {room.peerCount} {room.peerCount === 1 ? 'fan' : 'fans'} connected to the swarm
           </p>
@@ -354,7 +354,7 @@ export function Stand({
         <div className="sidebar-section">
           <h4>Lock Your Pick</h4>
           <p className="text-muted">
-            One seal per curva · Stored on your Hypercore
+            One seal per curvax · Stored on your Hypercore
           </p>
         </div>
 

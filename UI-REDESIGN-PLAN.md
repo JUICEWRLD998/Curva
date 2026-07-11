@@ -1,9 +1,9 @@
-# CURVA — UI/UX Redesign Plan
+# CURVAX — UI/UX Redesign Plan
 **Version 2.0 Design System & Experience Overhaul**
 
 ## Executive Summary
 
-After experiencing the current MVP, we need to elevate CURVA from functional to **visceral**. The current UI is serviceable but doesn't match the raw energy of a stadium curva. We're building a P2P matchday experience — it should feel like being in the stands, not a Zoom call.
+After experiencing the current MVP, we need to elevate CURVAX from functional to **visceral**. The current UI is serviceable but doesn't match the raw energy of a stadium curvax. We're building a P2P matchday experience — it should feel like being in the stands, not a Zoom call.
 
 ---
 
@@ -53,7 +53,7 @@ After experiencing the current MVP, we need to elevate CURVA from functional to 
 ## Design Principles (2.0)
 
 ### 1. **Stadium-First Mentality**
-> "If a real curva saw this screen, would they recognize it as their home?"
+> "If a real curvax saw this screen, would they recognize it as their home?"
 
 - **Scale matters**: Actions should feel monumental
 - **Sound + Motion**: Every interaction has weight
@@ -617,5 +617,5 @@ const springConfigs = {
 
 ---
 
-**Let's make CURVA feel like THE STANDS.** 🏟️⚡
+**Let's make CURVAX feel like THE STANDS.** 🏟️⚡
 

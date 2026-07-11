@@ -7,7 +7,7 @@ let worker = null
 let win = null
 
 function storageDir() {
-  const dir = path.join(app.getPath('userData'), 'curva-store')
+  const dir = path.join(app.getPath('userData'), 'curvax-store')
   fs.mkdirSync(dir, { recursive: true })
   return dir
 }
@@ -18,7 +18,7 @@ function createWindow() {
     height: 840,
     minWidth: 980,
     minHeight: 700,
-    title: 'CURVA',
+    title: 'CURVAX',
     backgroundColor: '#050a08',
     show: false,
     webPreferences: {
@@ -34,15 +34,15 @@ function createWindow() {
 
   worker.on('data', (data) => {
     if (win && !win.isDestroyed()) {
-      win.webContents.send('curva:from-worker', data.toString())
+      win.webContents.send('curvax:from-worker', data.toString())
     }
   })
 
   worker.stderr.on('data', (data) => {
-    console.error('[curva-worker]', data.toString())
+    console.error('[curvax-worker]', data.toString())
   })
 
-  ipcMain.handle('curva:send', (_evt, payload) => {
+  ipcMain.handle('curvax:send', (_evt, payload) => {
     const msg = typeof payload === 'string' ? payload : JSON.stringify(payload)
     if (!worker) return { ok: false, reason: 'worker-not-ready' }
     worker.write(Buffer.from(msg))

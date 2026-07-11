@@ -5,8 +5,8 @@ out/
 .vercel/
 *.log
 .DS_Store
-apps/curva/curva-data/
-apps/curva/dist/
+apps/curvax/curvax-data/
+apps/curvax/dist/
 apps/landing/out/
 apps/landing/.next/
 .pear/

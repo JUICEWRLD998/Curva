@@ -1,5 +1,5 @@
 import { ChantCard } from './ChantCard'
-import type { ChantCatalogItem, ChantLive } from '@/types/curva'
+import type { ChantCatalogItem, ChantLive } from '@/types/curvax'
 
 interface Props {
   catalog: ChantCatalogItem[]

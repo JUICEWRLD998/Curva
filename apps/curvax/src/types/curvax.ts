@@ -109,14 +109,14 @@ export type ClientCommand =
   | { type: 'set-phase'; phase: MatchPhase }
   | { type: 'set-match'; matchMeta: Partial<MatchMeta> }
 
-export interface CurvaBridge {
+export interface CurvaxBridge {
   send: (payload: ClientCommand | string) => Promise<{ ok: boolean; reason?: string }>
   onEvent: (listener: (event: WorkerEvent) => void) => () => void
 }
 
 declare global {
   interface Window {
-    curva?: CurvaBridge
+    curvax?: CurvaxBridge
   }
 }
 

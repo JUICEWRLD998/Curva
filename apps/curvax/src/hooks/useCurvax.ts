@@ -4,7 +4,7 @@ import type {
   Identity,
   RoomState,
   WorkerEvent
-} from '@/types/curva'
+} from '@/types/curvax'
 
 const emptyState: RoomState = {
   type: 'state',
@@ -24,7 +24,7 @@ const emptyState: RoomState = {
   historyCount: 0
 }
 
-export function useCurva() {
+export function useCurvax() {
   const [ready, setReady] = useState(false)
   const [room, setRoom] = useState<RoomState>(emptyState)
   const [toast, setToast] = useState<{ message: string; error?: boolean } | null>(null)
@@ -39,15 +39,15 @@ export function useCurva() {
   }, [])
 
   const send = useCallback(async (cmd: ClientCommand) => {
-    if (!window.curva) {
-      showToast('Run CURVA with npm run dev (Electron + Pear worker)', true)
+    if (!window.curvax) {
+      showToast('Run CURVAX with npm run dev (Electron + Pear worker)', true)
       return
     }
-    await window.curva.send(cmd)
+    await window.curvax.send(cmd)
   }, [showToast])
 
   useEffect(() => {
-    if (!window.curva) {
+    if (!window.curvax) {
       setBridgeMissing(true)
       setReady(true)
       setRoom((r) => ({
@@ -57,7 +57,7 @@ export function useCurva() {
       return
     }
 
-    const off = window.curva.onEvent((msg: WorkerEvent) => {
+    const off = window.curvax.onEvent((msg: WorkerEvent) => {
       switch (msg.type) {
         case 'ready':
           setReady(true)
@@ -71,7 +71,7 @@ export function useCurva() {
           showToast(`You’re in ${msg.roomCode}`)
           break
         case 'left':
-          showToast('Left the curva')
+          showToast('Left the curvax')
           break
         case 'sealed':
           showToast('Prediction sealed on Hypercore')
@@ -88,9 +88,9 @@ export function useCurva() {
       }
     })
 
-    void window.curva.send({ type: 'get-state' })
+    void window.curvax.send({ type: 'get-state' })
     const retry = window.setTimeout(() => {
-      void window.curva?.send({ type: 'get-state' })
+      void window.curvax?.send({ type: 'get-state' })
     }, 2500)
 
     return () => {

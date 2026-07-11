@@ -1,4 +1,4 @@
-# CURVA — 2-Minute Quickstart
+# CURVAX — 2-Minute Quickstart
 
 **Goal**: Test peer-to-peer matchday experience with two instances.
 
@@ -6,11 +6,11 @@
 
 ```bash
 # Terminal 1 (Instance A)
-cd apps/curva
+cd apps/curvax
 npm install && npm run dev
 
 # Terminal 2 (Instance B) — wait for A to start first
-cd apps/curva
+cd apps/curvax
 npm run dev
 ```
 
@@ -21,14 +21,14 @@ Two Electron windows open. Ready to test.
 ## Test Flow (90 seconds)
 
 ### 1. Create Room (Instance A)
-- Fill **"Open a curva"** form (Brazil vs Germany)
+- Fill **"Open a curvax"** form (Brazil vs Germany)
 - Click **"Create room code"**
 - **Copy the code** (CV-XXXXXX)
 
 ### 2. Join Room (Instance B)
-- Paste code in **"Join a curva"**
+- Paste code in **"Join a curvax"**
 - Click **"Enter the stand"**
-- Both show **"2 in the curva"** ✅
+- Both show **"2 in the curvax"** ✅
 
 ### 3. Test Pulse
 - **Instance A**: Press **GOAL**

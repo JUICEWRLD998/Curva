@@ -1,6 +1,6 @@
 import { FormEvent, useState } from 'react'
 import { motion } from 'framer-motion'
-import type { Identity, MatchMeta } from '@/types/curva'
+import type { Identity, MatchMeta } from '@/types/curvax'
 import { lobbyAnimations, cardVariants } from '@/lib/motion'
 import { playClick } from '@/lib/audio'
 
@@ -68,7 +68,7 @@ export function Lobby({ identity, onSaveProfile, onCreate, onJoin }: Props) {
         <div className="pitch-lines" aria-hidden="true" />
         <div className="copy">
           <p className="eyebrow">Built for the tournament moment</p>
-          <h2>Feel the curva from anywhere.</h2>
+          <h2>Feel the curvax from anywhere.</h2>
           <div className="feature-grid">
             <div className="feature">
               <b>PULSE</b>
@@ -104,7 +104,7 @@ export function Lobby({ identity, onSaveProfile, onCreate, onJoin }: Props) {
           aria-labelledby="create-room-heading"
         >
           <div className="panel-badge">Primary</div>
-          <h3 id="create-room-heading">Open a Curva</h3>
+          <h3 id="create-room-heading">Open a Curvax</h3>
           <p className="panel-desc">Host a new room on the Hyperswarm</p>
           
           <div className="row2">
@@ -160,7 +160,7 @@ export function Lobby({ identity, onSaveProfile, onCreate, onJoin }: Props) {
         >
           <div className="panel-badge">Join</div>
           <h3>Enter the Stand</h3>
-          <p className="panel-desc">Connect to an existing curva</p>
+          <p className="panel-desc">Connect to an existing curvax</p>
           
           <label className="field">
             <span>Room Code</span>

@@ -1,10 +1,10 @@
-# CURVA — Implementation Plan & Build Status
+# CURVAX — Implementation Plan & Build Status
 
 ## Product
 
-**CURVA** is a real peer-to-peer matchday product (not a demo shell): shared stadium stands with **no central server**.
+**CURVAX** is a real peer-to-peer matchday product (not a demo shell): shared stadium stands with **no central server**.
 
-Users create/join a **curva**, feel a live **Pulse**, fire **Chant Circles**, lock **Prediction Seals** on Hypercore, and seed a **Match Capsule** — on the **Pears stack**.
+Users create/join a **curvax**, feel a live **Pulse**, fire **Chant Circles**, lock **Prediction Seals** on Hypercore, and seed a **Match Capsule** — on the **Pears stack**.
 
 ## Modern stack (user requirement)
 
@@ -57,7 +57,7 @@ Vercel hosts **landing only**. Product networking is desktop Pears (Hyperswarm i
 ## Run
 
 ```bash
-cd apps/curva && npm install && npm run dev
+cd apps/curvax && npm install && npm run dev
 cd apps/landing && npm install && npm run build
 ```
 

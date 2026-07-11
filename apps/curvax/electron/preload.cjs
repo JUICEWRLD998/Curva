@@ -1,8 +1,8 @@
 const { contextBridge, ipcRenderer } = require('electron')
 
-contextBridge.exposeInMainWorld('curva', {
+contextBridge.exposeInMainWorld('curvax', {
   send(payload) {
-    return ipcRenderer.invoke('curva:send', payload)
+    return ipcRenderer.invoke('curvax:send', payload)
   },
   onEvent(listener) {
     const wrap = (_evt, payload) => {
@@ -12,7 +12,7 @@ contextBridge.exposeInMainWorld('curva', {
         listener({ type: 'parse-error', raw: payload, error: String(err) })
       }
     }
-    ipcRenderer.on('curva:from-worker', wrap)
-    return () => ipcRenderer.removeListener('curva:from-worker', wrap)
+    ipcRenderer.on('curvax:from-worker', wrap)
+    return () => ipcRenderer.removeListener('curvax:from-worker', wrap)
   }
 })

@@ -1,4 +1,4 @@
-# CURVA — Testing Guide
+# CURVAX — Testing Guide
 
 This guide walks you through testing the complete peer-to-peer matchday experience.
 
@@ -15,7 +15,7 @@ This guide walks you through testing the complete peer-to-peer matchday experien
 Open your first terminal:
 
 ```bash
-cd apps/curva
+cd apps/curvax
 npm install   # if not already done
 npm run dev
 ```
@@ -59,7 +59,7 @@ A **second** Electron window will open. You now have two independent peers.
 
 **On Instance A only:**
 
-1. Scroll to **"Open a curva"** section
+1. Scroll to **"Open a curvax"** section
 2. Set match details:
    - **Home**: Brazil
    - **Away**: Germany
@@ -80,13 +80,13 @@ A **second** Electron window will open. You now have two independent peers.
 
 **On Instance B:**
 
-1. In the **Lobby**, scroll to **"Join a curva"**
+1. In the **Lobby**, scroll to **"Join a curvax"**
 2. Paste the room code from Instance A (e.g., `CV-XXXXXX`)
 3. Click **"Enter the stand"**
 
 **Result:**
 - Instance B joins the same room
-- Both instances now show: **"2 in the curva"**
+- Both instances now show: **"2 in the curvax"**
 - You can see each other in the **"The stand"** sidebar (left panel)
 - Each peer shows their name and color dot
 
@@ -173,8 +173,8 @@ Seals are **append-only commitments** stored on your local Hypercore.
 
 **Key concept:**
 - Once sealed, predictions are **immutable** (written to Hypercore)
-- One seal per peer per curva (can't change after sealing)
-- Seals survive app restarts (stored in `curva-data/`)
+- One seal per peer per curvax (can't change after sealing)
+- Seals survive app restarts (stored in `curvax-data/`)
 
 ---
 
@@ -220,7 +220,7 @@ The **Match Capsule** is an append-only log of the entire session.
 - Room join events
 
 **Capsule persistence:**
-- Stored locally: `apps/curva/curva-data/capsule-CV-XXXXXX/`
+- Stored locally: `apps/curvax/curvax-data/capsule-CV-XXXXXX/`
 - Hypercore format — can be re-seeded, shared, verified
 - **Portable memory** of the match night
 
@@ -439,7 +439,7 @@ The **Match Capsule** is an append-only log of the entire session.
 Test the production bundle:
 
 ```bash
-cd apps/curva
+cd apps/curvax
 npm run build      # Creates dist/
 npm start          # Runs Electron with production bundle
 ```
@@ -462,7 +462,7 @@ Verify:
 ### "Worker not ready"
 
 - Bare worker failed to start
-- Check terminal for `[curva-worker]` error logs
+- Check terminal for `[curvax-worker]` error logs
 - Ensure `pear-runtime` is installed: `npm install`
 
 ### Energy meter stuck at 0
@@ -508,7 +508,7 @@ Verify:
 **Questions? Issues? Check:**
 - Terminal output for Bare worker logs
 - Browser DevTools console (React warnings)
-- `apps/curva/curva-data/` for local storage files
+- `apps/curvax/curvax-data/` for local storage files
 
 ---
 
@@ -518,15 +518,15 @@ Verify:
 
 ## Deployment Guide
 
-### CURVA Desktop App (Electron)
+### CURVAX Desktop App (Electron)
 
-**The CURVA app is a desktop application that runs locally** using Electron. It is NOT deployed to a web server. Users download and run it on their machine.
+**The CURVAX app is a desktop application that runs locally** using Electron. It is NOT deployed to a web server. Users download and run it on their machine.
 
 **Distribution Options:**
 
 1. **Development Mode** (current):
    ```bash
-   cd apps/curva
+   cd apps/curvax
    npm run dev
    ```
    - Runs Vite dev server + Electron
@@ -535,7 +535,7 @@ Verify:
 
 2. **Production Build** (for testing):
    ```bash
-   cd apps/curva
+   cd apps/curvax
    npm run build    # Build React app to dist/
    npm start        # Run Electron with production bundle
    ```
@@ -555,8 +555,8 @@ Verify:
    ```json
    {
      "build": {
-       "appId": "com.curva.app",
-       "productName": "CURVA",
+       "appId": "com.curvax.app",
+       "productName": "CURVAX",
        "directories": {
          "output": "release"
        },
@@ -600,9 +600,9 @@ Verify:
    - Snapcraft (Linux)
 
 **Important Notes:**
-- CURVA is P2P - no backend server to deploy
+- CURVAX is P2P - no backend server to deploy
 - Users connect directly via Hyperswarm DHT
-- Each installation stores data locally in `curva-data/`
+- Each installation stores data locally in `curvax-data/`
 
 ---
 
@@ -659,8 +659,8 @@ Verify:
    - Example: `NEXT_PUBLIC_APP_DOWNLOAD_URL`
 
 **Landing Page URL Example**:
-- Vercel: `https://curva.vercel.app`
-- Custom: `https://curva.football` (configure in Vercel)
+- Vercel: `https://curvax.vercel.app`
+- Custom: `https://curvax.football` (configure in Vercel)
 
 **Content for Landing**:
 - Hero: "Peer-to-peer matchday stands"
@@ -729,16 +729,16 @@ Before considering CURVA production-ready, verify:
 ## Where is Everything?
 
 **Local Development**:
-- CURVA app: Runs at `http://localhost:5173` (Vite) → Electron window
+- CURVAX app: Runs at `http://localhost:5173` (Vite) → Electron window
 - Landing: Runs at `http://localhost:3000` (Next.js dev server)
 
 **Production**:
-- CURVA app: Packaged as native executable (Windows .exe, Mac .dmg, Linux AppImage)
+- CURVAX app: Packaged as native executable (Windows .exe, Mac .dmg, Linux AppImage)
 - Landing: Deployed to Vercel at your custom domain
 
 **Data Storage**:
-- User data: `apps/curva/curva-data/identity/` (Hypercore)
-- Match capsules: `apps/curva/curva-data/capsule-CV-XXXXXX/` (per room)
+- User data: `apps/curvax/curvax-data/identity/` (Hypercore)
+- Match capsules: `apps/curvax/curvax-data/capsule-CV-XXXXXX/` (per room)
 - Electron cache: OS-specific app data directory
 
 **Network**:
@@ -748,4 +748,4 @@ Before considering CURVA production-ready, verify:
 
 ---
 
-**Ready to roar?** Follow the guide above to test every aspect of CURVA! 🏟️⚡
+**Ready to roar?** Follow the guide above to test every aspect of CURVAX! 🏟️⚡

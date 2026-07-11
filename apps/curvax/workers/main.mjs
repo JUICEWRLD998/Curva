@@ -1,5 +1,5 @@
 /**
- * CURVA Bare worker — Pears networking & storage only.
+ * CURVAX Bare worker — Pears networking & storage only.
  * Hyperswarm · Corestore · Hypercore
  * (Bare requires ESM JS here — intentional exception to TS UI stack.)
  */
@@ -8,7 +8,7 @@ import Corestore from 'corestore'
 import b4a from 'b4a'
 import crypto from 'hypercore-crypto'
 
-const storePath = Bare.argv[2] || './curva-data'
+const storePath = Bare.argv[2] || './curvax-data'
 const store = new Corestore(storePath)
 const swarm = new Hyperswarm()
 
@@ -53,7 +53,7 @@ function shortId(buf) {
 
 function roomTopicFromCode(code) {
   const normalized = String(code).trim().toUpperCase().replace(/[^A-Z0-9-]/g, '')
-  return crypto.hash(b4a.from('curva:v1:room:' + normalized))
+  return crypto.hash(b4a.from('curvax:v1:room:' + normalized))
 }
 
 function randomRoomCode() {
@@ -284,9 +284,9 @@ swarm.on('connection', (conn) => {
 })
 
 async function initStorage() {
-  identityCore = store.get({ name: 'curva-identity' })
+  identityCore = store.get({ name: 'curvax-identity' })
   await identityCore.ready()
-  sealsCore = store.get({ name: 'curva-seals' })
+  sealsCore = store.get({ name: 'curvax-seals' })
   await sealsCore.ready()
 
   if (identityCore.length === 0) {
@@ -374,7 +374,7 @@ async function updateProfile({ name, color }) {
 
 function firePulse({ kind = 'roar', intensity = 1 }) {
   if (!joined) {
-    emit({ type: 'error', message: 'Join a curva first' })
+    emit({ type: 'error', message: 'Join a curvax first' })
     return
   }
   const pulse = {
@@ -396,7 +396,7 @@ function firePulse({ kind = 'roar', intensity = 1 }) {
 
 function fireChant(chantId) {
   if (!joined) {
-    emit({ type: 'error', message: 'Join a curva first' })
+    emit({ type: 'error', message: 'Join a curvax first' })
     return
   }
   const catalog = CHANTS.find((c) => c.id === chantId) || { id: chantId, label: chantId }
@@ -433,7 +433,7 @@ async function sealPrediction(pick) {
 
   for (const s of room.seals.values()) {
     if (s.peerId === identity.id && s.roomCode === roomCode && !s.void) {
-      emit({ type: 'error', message: 'You already sealed a prediction for this curva' })
+      emit({ type: 'error', message: 'You already sealed a prediction for this curvax' })
       return
     }
   }

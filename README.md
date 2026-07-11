@@ -1,8 +1,8 @@
-# curvaxX
+# curvax
 
 **Peer-to-peer matchday stands** for the Tether Developers Cup — **Pears track**.
 
-The stadium curvaxX is where fans become one organism. Online, fans are isolated tabs. **curvaxX** recreates that body with **no central server**: live crowd **Pulse**, **Chant Circles**, **Prediction Seals** on Hypercore, and seedable **Match Capsules**.
+The stadium curvax is where fans become one organism. Online, fans are isolated tabs. **curvax** recreates that body with **no central server**: live crowd **Pulse**, **Chant Circles**, **Prediction Seals** on Hypercore, and seedable **Match Capsules**.
 
 ## Why this is not “another chat app”
 
@@ -27,7 +27,7 @@ The stadium curvaxX is where fans become one organism. Online, fans are isolated
 ## Repository layout
 
 ```
-apps/curvaxX/     → desktop product (run this for the real app)
+apps/curvax/     → desktop product (run this for the real app)
 apps/landing/   → Next.js static site for Vercel
 implementation.md
 README.md
@@ -45,7 +45,7 @@ LICENSE
 ### Run the product
 
 ```bash
-cd apps/curvaxX
+cd apps/curvax
 npm install
 npm run dev
 ```
@@ -63,7 +63,7 @@ This starts Vite + Electron and boots the Pear Bare worker (Hyperswarm).
 ### Production UI build
 
 ```bash
-cd apps/curvaxX
+cd apps/curvax
 npm run build
 npm start
 ```
