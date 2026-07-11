@@ -50,6 +50,7 @@ export function Lobby({ identity, onSaveProfile, onCreate, onJoin }: Props) {
       <motion.section 
         className="hero"
         {...lobbyAnimations.hero}
+        role="banner"
       >
         <p className="eyebrow">Peer-to-peer · Zero servers · Pure football</p>
         <h1>The stand has no server.</h1>
@@ -100,9 +101,10 @@ export function Lobby({ identity, onSaveProfile, onCreate, onJoin }: Props) {
           initial="hidden"
           animate="visible"
           whileHover="hover"
+          aria-labelledby="create-room-heading"
         >
           <div className="panel-badge">Primary</div>
-          <h3>Open a Curva</h3>
+          <h3 id="create-room-heading">Open a Curva</h3>
           <p className="panel-desc">Host a new room on the Hyperswarm</p>
           
           <div className="row2">
@@ -113,6 +115,8 @@ export function Lobby({ identity, onSaveProfile, onCreate, onJoin }: Props) {
                 maxLength={28} 
                 onChange={(e) => setHome(e.target.value)}
                 placeholder="Brazil"
+                aria-label="Home team name"
+                required
               />
             </label>
             <label className="field">
@@ -122,6 +126,8 @@ export function Lobby({ identity, onSaveProfile, onCreate, onJoin }: Props) {
                 maxLength={28} 
                 onChange={(e) => setAway(e.target.value)}
                 placeholder="Germany"
+                aria-label="Away team name"
+                required
               />
             </label>
           </div>
@@ -133,6 +139,7 @@ export function Lobby({ identity, onSaveProfile, onCreate, onJoin }: Props) {
               maxLength={48} 
               onChange={(e) => setLabel(e.target.value)}
               placeholder="World Stage · Group Night"
+              aria-label="Match description label"
             />
           </label>
           

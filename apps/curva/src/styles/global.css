@@ -1,7 +1,7 @@
 /* Import Design Tokens */
 @import url('./tokens.css');
 
-/* Import Google Fonts */
+/* Import Google Fonts with font-display: swap for better performance */
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400..900&family=Barlow+Condensed:wght@400;600;700;900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 /* ============================================
@@ -12,6 +12,19 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+/* Performance: Optimize image rendering */
+img,
+svg,
+canvas {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+canvas {
+  /* Performance: Prevent canvas blurring on resize */
+  image-rendering: pixelated;
 }
 
 html,
@@ -28,6 +41,16 @@ body {
   background: var(--bg-base);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Performance: Enable smooth scrolling with GPU acceleration */
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  body {
+    scroll-behavior: auto;
+  }
 }
 
 /* Stadium atmosphere background */
@@ -105,9 +128,41 @@ a {
   z-index: 2;
 }
 
+/* Skip to main content link (WCAG 2.4.1) */
+.skip-to-main {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  z-index: var(--z-toast);
+  padding: var(--space-3) var(--space-5);
+  background: var(--gold);
+  color: var(--pitch-950);
+  font-weight: var(--weight-bold);
+  text-decoration: none;
+  border-radius: 0 0 var(--radius-md) 0;
+  box-shadow: var(--shadow-xl);
+  transition: top var(--duration-fast) var(--ease-out);
+}
+
+.skip-to-main:focus {
+  top: 0;
+  outline: 3px solid var(--mint);
+  outline-offset: 2px;
+}
+
 /* ============================================
    COMMON COMPONENTS
    ============================================ */
+
+/* Performance: CSS Containment for isolated components */
+.glass,
+.panel,
+.chant-card,
+.pulse-button,
+.roar-button,
+.scoreboard {
+  contain: layout style paint;
+}
 
 /* Glass Panels */
 .glass {
@@ -231,6 +286,47 @@ a {
   background: var(--glass-darkest);
 }
 
+/* ============================================
+   FOCUS INDICATORS (WCAG 2.4.7)
+   ============================================ */
+
+/* Focus-visible for better keyboard navigation */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--action-idle);
+}
+
+/* Remove default focus outline for mouse users */
+button:focus:not(:focus-visible),
+a:focus:not(:focus-visible),
+[tabindex]:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Enhanced focus for interactive cards */
+.chant-card:focus-visible,
+.panel:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px var(--action-idle);
+}
+
+/* Focus for pulse buttons */
+.pulse-button:focus-visible,
+.roar-button:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 4px;
+  box-shadow: 
+    0 0 0 6px var(--action-idle),
+    0 0 30px rgba(245, 197, 24, 0.4);
+}
+
 .field input::placeholder {
   color: var(--text-secondary);
   opacity: 0.6;
@@ -346,10 +442,14 @@ a {
   background: conic-gradient(from 210deg, var(--gold-bright), var(--mint), var(--gold), var(--gold-bright));
   box-shadow: var(--shadow-glow-gold);
   animation: rotate 8s linear infinite;
+  /* Performance: Use transform instead of top/left */
+  will-change: transform;
 }
 
 @keyframes rotate {
-  to { transform: rotate(360deg); }
+  to { 
+    transform: rotate(360deg); 
+  }
 }
 
 .mark.sm {
@@ -695,6 +795,12 @@ a {
   }
 }
 
+/* Performance: Optimize pitch glow animation */
+@keyframes pitchGlow {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.3; }
+}
+
 /* Energy Visualization */
 .energy-wrap {
   width: 100%;
@@ -753,6 +859,9 @@ a {
   box-shadow: 
     inset 0 2px 12px rgba(0, 0, 0, 0.3),
     var(--shadow-md);
+  /* Performance: Force GPU acceleration */
+  transform: translate3d(0, 0, 0);
+  will-change: contents;
 }
 
 /* Pulse Feed */
@@ -1020,6 +1129,49 @@ a {
 /* ============================================
    ANIMATION EFFECTS
    ============================================ */
+
+/* Performance Optimization - will-change for animated elements */
+.pulse-button,
+.roar-button,
+.chant-card,
+.btn,
+.phase-pill {
+  will-change: transform;
+}
+
+.energy-fill,
+.possession-fill,
+.cooldown-ring-progress,
+.energy-gauge-fill {
+  will-change: width, transform;
+}
+
+.wave {
+  will-change: contents;
+}
+
+/* Remove will-change after animations complete to free resources */
+.pulse-button:not(:hover):not(:active),
+.roar-button:not(:hover):not(:active),
+.chant-card:not(:hover):not(:active),
+.btn:not(:hover):not(:active) {
+  will-change: auto;
+}
+
+/* Hardware acceleration for smooth animations */
+.pulse-button,
+.roar-button,
+.chant-card,
+.btn,
+.toast,
+.toast-notification,
+.eruption-overlay {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  perspective: 1000px;
+  -webkit-perspective: 1000px;
+}
 
 /* Screen Shake Effects */
 @keyframes screenShake {

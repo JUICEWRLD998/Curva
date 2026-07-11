@@ -49,10 +49,27 @@ export function PulseWave({ energy, bump = 0 }: Props) {
 
   useEffect(() => {
     let raf = 0
-    const draw = () => {
+    let lastTime = 0
+    const targetFPS = 60
+    const frameInterval = 1000 / targetFPS
+    
+    const draw = (currentTime: number) => {
+      // Throttle to target FPS for consistent performance
+      const elapsed = currentTime - lastTime
+      
+      if (elapsed < frameInterval) {
+        raf = requestAnimationFrame(draw)
+        return
+      }
+      
+      lastTime = currentTime - (elapsed % frameInterval)
+      
       const canvas = canvasRef.current
       if (!canvas) return
-      const ctx = canvas.getContext('2d')
+      const ctx = canvas.getContext('2d', { 
+        alpha: false, // Optimization: no alpha channel needed
+        desynchronized: true // Optimization: allow desync for better performance
+      })
       if (!ctx) return
 
       const dpr = window.devicePixelRatio || 1

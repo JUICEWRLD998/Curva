@@ -52,6 +52,14 @@ export function PulseButton({
     setTimeout(() => setIsPressed(false), 600)
   }
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    // Support Enter and Space for activation (WCAG 2.1.1)
+    if ((e.key === 'Enter' || e.key === ' ') && !isDisabled) {
+      e.preventDefault()
+      handleClick()
+    }
+  }
+
   const getIntensityColor = () => {
     if (intensity >= 5) return 'var(--rose)'
     if (intensity >= 3) return 'var(--gold)'
@@ -66,7 +74,11 @@ export function PulseButton({
       type="button"
       className={`pulse-button ${isDisabled ? 'disabled' : ''} ${isPressed ? 'pressed' : ''}`}
       onClick={handleClick}
+      onKeyDown={handleKeyDown}
       disabled={isDisabled}
+      aria-label={`${label} reaction - ${energyCost}% energy cost${timeRemaining > 0 ? `, cooling down for ${Math.ceil(timeRemaining)} seconds` : ''}`}
+      aria-pressed={isPressed}
+      aria-disabled={isDisabled}
       whileHover={{ scale: isDisabled ? 1 : 1.05, y: isDisabled ? 0 : -4 }}
       whileTap={{ scale: isDisabled ? 1 : 0.94 }}
       style={{

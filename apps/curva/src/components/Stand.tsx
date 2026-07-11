@@ -9,7 +9,7 @@ import { FloatingSidebar } from './FloatingSidebar'
 import { Scoreboard } from './Scoreboard'
 import { EruptionOverlay } from './EruptionOverlay'
 import { Toast } from './Toast'
-import { playHit, playGoal, playSave, playFoul, playRoar, playEruption } from '@/lib/audio'
+import { playHit, playGoal, playSave, playFoul, playRoar, playClick } from '@/lib/audio'
 import { triggerHaptic, triggerScreenShake, standAnimations } from '@/lib/motion'
 
 interface Props {
@@ -74,6 +74,7 @@ export function Stand({
 
   const sealSubmit = (e: FormEvent) => {
     e.preventDefault()
+    playClick()
     onSeal({ winner, homeScore, awayScore, scorer: scorer.trim() })
   }
 
@@ -92,7 +93,10 @@ export function Stand({
             <span className="dot" />
             {room.peerCount} in the curva
           </div>
-          <button className="btn btn-ghost btn-sm" type="button" onClick={onLeave}>
+          <button className="btn btn-ghost btn-sm" type="button" onClick={() => {
+            playClick()
+            onLeave()
+          }}>
             Leave
           </button>
         </div>
@@ -120,10 +124,19 @@ export function Stand({
           <motion.div 
             className="glass energy-wrap"
             {...standAnimations.waveform}
+            role="region"
+            aria-label="Crowd energy level"
           >
             <div className="energy-head">
               <h3>Crowd Pulse</h3>
-              <span className="energy-num">{room.energy}</span>
+              <span 
+                className="energy-num"
+                role="status"
+                aria-live="polite"
+                aria-atomic="true"
+              >
+                {room.energy}
+              </span>
             </div>
             <div className="energy-bar">
               <div className="energy-fill" style={{ width: `${room.energy}%` }} />
@@ -234,21 +247,30 @@ export function Stand({
           <div className="sidebar-triggers">
             <button 
               className="btn btn-ghost"
-              onClick={() => setIsPeersOpen(true)}
+              onClick={() => {
+                playClick()
+                setIsPeersOpen(true)
+              }}
               type="button"
             >
               👥 {room.peerCount} {room.peerCount === 1 ? 'Fan' : 'Fans'}
             </button>
             <button 
               className="btn btn-ghost"
-              onClick={() => setIsSealsOpen(true)}
+              onClick={() => {
+                playClick()
+                setIsSealsOpen(true)
+              }}
               type="button"
             >
               🔒 {room.seals.length} {room.seals.length === 1 ? 'Seal' : 'Seals'}
             </button>
             <button 
               className="btn btn-ghost" 
-              onClick={onCopyCapsule}
+              onClick={() => {
+                playClick()
+                onCopyCapsule()
+              }}
               type="button"
             >
               📦 Capsule
@@ -307,7 +329,10 @@ export function Stand({
               <button 
                 className="btn btn-ghost btn-sm" 
                 type="button" 
-                onClick={onCopyCapsule}
+                onClick={() => {
+                  playClick()
+                  onCopyCapsule()
+                }}
                 style={{ width: '100%', marginTop: 'var(--space-2)' }}
               >
                 Copy Key

@@ -39,6 +39,14 @@ export function RoarButton({ disabled = false, cooldown = 0, energy = 100, onCli
     setTimeout(() => setIsPressed(false), 1000)
   }
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    // Support Enter and Space for activation (WCAG 2.1.1)
+    if ((e.key === 'Enter' || e.key === ' ') && !isDisabled) {
+      e.preventDefault()
+      handleClick()
+    }
+  }
+
   const isDisabled = disabled || timeRemaining > 0
   
   // Energy color based on level
@@ -59,7 +67,11 @@ export function RoarButton({ disabled = false, cooldown = 0, energy = 100, onCli
       type="button"
       className={`roar-button ${isDisabled ? 'disabled' : ''} ${isPressed ? 'pressed' : ''}`}
       onClick={handleClick}
+      onKeyDown={handleKeyDown}
       disabled={isDisabled}
+      aria-label={`ROAR - Ultimate crowd reaction${timeRemaining > 0 ? `, cooling down for ${timeRemaining} seconds` : ``}. Current energy: ${Math.round(energy)}%`}
+      aria-pressed={isPressed}
+      aria-disabled={isDisabled}
       whileHover={{ scale: isDisabled ? 1 : 1.04, y: isDisabled ? 0 : -6 }}
       whileTap={{ scale: isDisabled ? 1 : 0.96 }}
       style={{

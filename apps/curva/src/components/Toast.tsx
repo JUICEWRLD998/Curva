@@ -23,13 +23,16 @@ export function Toast({ message, icon, color = 'var(--gold)', duration = 3000, o
       {message && (
         <motion.div
           className="toast-notification"
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
           variants={toastVariants}
           initial="initial"
           animate="animate"
           exit="exit"
           style={{ '--toast-color': color } as React.CSSProperties}
         >
-          {icon && <span className="toast-icon">{icon}</span>}
+          {icon && <span className="toast-icon" aria-hidden="true">{icon}</span>}
           <span className="toast-message">{message}</span>
         </motion.div>
       )}

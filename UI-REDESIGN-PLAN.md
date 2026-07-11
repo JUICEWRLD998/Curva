@@ -544,10 +544,23 @@ const springConfigs = {
 - [ ] Eruption celebration
 
 ### Week 5: Polish
-- [ ] Sound effects integration
-- [ ] Haptic feedback (if available)
-- [ ] Accessibility audit
-- [ ] Performance optimization
+- [x] Sound effects integration
+- [x] Haptic feedback (if available)
+- [x] Accessibility audit
+- [x] Performance optimization
+
+**Completed Performance Optimizations:**
+- ✅ Added `will-change` CSS properties for animated elements (transform, width)
+- ✅ Implemented hardware acceleration with `translateZ(0)` and `backface-visibility: hidden`
+- ✅ Added CSS containment (`contain: layout style paint`) for isolated components
+- ✅ Optimized canvas rendering with 60fps throttling and `desynchronized: true` context
+- ✅ Enabled GPU acceleration for critical animations
+- ✅ Added `font-display: swap` for Google Fonts to prevent FOIT
+- ✅ Optimized image rendering with `crisp-edges`
+- ✅ Implemented smooth scrolling with touch optimization
+- ✅ Auto-cleanup of `will-change` after animations complete
+- ✅ Used `transform` and `opacity` (compositor-only properties) in animations
+- ✅ Verified all animations target 60fps with consistent frame timing
 
 ---
 

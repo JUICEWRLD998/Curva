@@ -22,9 +22,14 @@ export default function App() {
 
   return (
     <div className="app-shell">
+      {/* Skip to main content link for keyboard navigation (WCAG 2.4.1) */}
+      <a href="#main-content" className="skip-to-main">
+        Skip to main content
+      </a>
+      
       {!room.joined ? (
         <>
-          <header className="topbar">
+          <header className="topbar" role="banner">
             <div className="brand">
               <div className="mark sm">C</div>
               <div>
@@ -38,52 +43,59 @@ export default function App() {
             </div>
           </header>
           {bridgeMissing ? (
-            <div className="bridge-banner">
+            <div className="bridge-banner" role="alert">
               UI preview mode — start with <b>npm run dev</b> in <code>apps/curva</code> for real Hyperswarm.
             </div>
           ) : null}
-          <Lobby
-            identity={identity}
-            onSaveProfile={(name, color) => void send({ type: 'profile', name, color })}
-            onCreate={(matchMeta) => void send({ type: 'create-room', matchMeta })}
-            onJoin={(roomCode) => {
-              if (!roomCode) {
-                showToast('Enter a room code', true)
-                return
-              }
-              void send({ type: 'join-room', roomCode })
-            }}
-          />
+          <main id="main-content" role="main">
+            <Lobby
+              identity={identity}
+              onSaveProfile={(name, color) => void send({ type: 'profile', name, color })}
+              onCreate={(matchMeta) => void send({ type: 'create-room', matchMeta })}
+              onJoin={(roomCode) => {
+                if (!roomCode) {
+                  showToast('Enter a room code', true)
+                  return
+                }
+                void send({ type: 'join-room', roomCode })
+              }}
+            />
+          </main>
         </>
       ) : (
-        <Stand
-          room={room}
-          eruption={eruption}
-          onLeave={() => void send({ type: 'leave-room' })}
-          onPulse={(kind, intensity) => void send({ type: 'pulse', kind, intensity })}
-          onChant={(chantId) => void send({ type: 'chant', chantId })}
-          onPhase={(phase) => void send({ type: 'set-phase', phase })}
-          onSeal={(pick) => void send({ type: 'seal', pick })}
-          onCopyCapsule={async () => {
-            const key = room.capsuleKey
-            if (!key) {
-              showToast('No capsule yet', true)
-              return
-            }
-            try {
-              await navigator.clipboard.writeText(key)
-              showToast('Capsule key copied')
-            } catch {
-              showToast(key)
-            }
-          }}
-        />
+        <main id="main-content" role="main">
+          <Stand
+            room={room}
+            eruption={eruption}
+            onLeave={() => void send({ type: 'leave-room' })}
+            onPulse={(kind, intensity) => void send({ type: 'pulse', kind, intensity })}
+            onChant={(chantId) => void send({ type: 'chant', chantId })}
+            onPhase={(phase) => void send({ type: 'set-phase', phase })}
+            onSeal={(pick) => void send({ type: 'seal', pick })}
+            onCopyCapsule={async () => {
+              const key = room.capsuleKey
+              if (!key) {
+                showToast('No capsule yet', true)
+                return
+              }
+              try {
+                await navigator.clipboard.writeText(key)
+                showToast('Capsule key copied')
+              } catch {
+                showToast(key)
+              }
+            }}
+          />
+        </main>
       )}
 
       <AnimatePresence>
         {toast ? (
           <motion.div
             className={`toast${toast.error ? ' error' : ''}`}
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 8 }}

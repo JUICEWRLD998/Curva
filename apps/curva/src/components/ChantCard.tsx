@@ -28,11 +28,22 @@ export function ChantCard({
     onClick()
   }
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    // Support Enter and Space for activation (WCAG 2.1.1)
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      handleClick()
+    }
+  }
+
   return (
     <motion.button
       type="button"
       className={`chant-card ${isActive ? 'active' : 'idle'}`}
       onClick={handleClick}
+      onKeyDown={handleKeyDown}
+      aria-label={`Chant: ${label}. ${voiceCount} of ${maxVoices} voices${isActive ? '. Active' : '. Click to join'}${countdown !== undefined && countdown > 0 ? `. ${countdown} seconds remaining` : ''}`}
+      aria-pressed={isActive}
       whileHover={{ scale: 1.03, y: -2 }}
       whileTap={{ scale: 0.97 }}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}

@@ -29,7 +29,11 @@ export function Scoreboard({
   
   return (
     <div className="scoreboard-container">
-      <div className="glass scoreboard">
+      <div 
+        className="glass scoreboard"
+        role="region"
+        aria-label="Match scoreboard"
+      >
         {/* Team Names and Scores */}
         <div className="scoreboard-main">
           <div className="team-section">
@@ -89,6 +93,9 @@ export function Scoreboard({
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
+            role="status"
+            aria-live="polite"
+            aria-label={`Possession: ${home} ${possession.home}%, ${away} ${possession.away}%`}
           >
             <div className="possession-bar">
               <div 
@@ -110,11 +117,18 @@ export function Scoreboard({
 
         {/* Phase Selector Pills */}
         {onPhaseChange && (
-          <div className="phase-selector">
+          <div 
+            className="phase-selector"
+            role="tablist"
+            aria-label="Match phase selection"
+          >
             {(['prematch', 'live', 'fulltime'] as MatchPhase[]).map((p) => (
               <button
                 key={p}
                 type="button"
+                role="tab"
+                aria-selected={phase === p}
+                aria-controls="match-content"
                 className={`phase-pill ${phase === p ? 'active' : ''}`}
                 onClick={() => {
                   playClick()
