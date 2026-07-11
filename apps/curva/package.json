@@ -1,0 +1,40 @@
+{
+  "name": "curva",
+  "version": "1.0.0",
+  "description": "CURVA — peer-to-peer matchday stands on the Pears stack",
+  "main": "electron/main.cjs",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -k \"vite\" \"wait-on tcp:5173 && cross-env VITE_DEV_SERVER_URL=http://localhost:5173 electron .\"",
+    "build": "tsc -p tsconfig.json --noEmit && vite build",
+    "start": "cross-env NODE_ENV=production electron .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "b4a": "^1.6.7",
+    "corestore": "^7.2.1",
+    "framer-motion": "^12.6.3",
+    "hypercore": "^11.6.1",
+    "hypercore-crypto": "^3.4.2",
+    "hyperswarm": "^4.17.0",
+    "lucide-react": "^0.487.0",
+    "pear-runtime": "^1.1.4",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.2",
+    "cross-env": "^7.0.3",
+    "electron": "^40.2.1",
+    "typescript": "^5.8.2",
+    "vite": "^6.2.2",
+    "wait-on": "^8.0.3"
+  },
+  "allowScripts": {
+    "electron@40.10.6": true,
+    "esbuild@0.25.12": true
+  }
+}

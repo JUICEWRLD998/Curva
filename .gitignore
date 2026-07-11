@@ -1,0 +1,13 @@
+node_modules/
+dist/
+out/
+.next/
+.vercel/
+*.log
+.DS_Store
+apps/curva/curva-data/
+apps/curva/dist/
+apps/landing/out/
+apps/landing/.next/
+.pear/
+*.local
