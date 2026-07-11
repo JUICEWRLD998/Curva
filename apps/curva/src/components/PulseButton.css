@@ -1,0 +1,198 @@
+/* PulseButton - Stadium-Style Pulse Trigger */
+
+.pulse-button {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  border-radius: var(--radius-xl);
+  border: 2px solid var(--line);
+  background: var(--glass-darker);
+  color: var(--text-primary);
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  transition: all var(--duration-normal) var(--ease-out);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Background Glow */
+.pulse-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 30% 30%,
+    var(--action-hover),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-out);
+  pointer-events: none;
+}
+
+.pulse-button:hover .pulse-glow {
+  opacity: 1;
+}
+
+/* Hover State */
+.pulse-button:hover {
+  border-color: var(--pulse-color, var(--gold));
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 0 40px var(--pulse-color, var(--gold));
+  transform: translateY(-4px);
+}
+
+/* Active/Pressed State */
+.pulse-button:active,
+.pulse-button.pressed {
+  transform: translateY(0) scale(0.96);
+}
+
+/* Disabled State */
+.pulse-button.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Icon */
+.pulse-icon {
+  font-size: 40px;
+  line-height: 1;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+}
+
+/* Label */
+.pulse-label {
+  font-family: var(--font-data);
+  font-size: 16px;
+  font-weight: var(--weight-black);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Intensity Dots */
+.intensity-dots {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.intensity-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--line);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.intensity-dot.active {
+  background: var(--pulse-color, var(--gold));
+  box-shadow: 0 0 8px var(--pulse-color, var(--gold));
+  transform: scale(1.2);
+}
+
+/* Chromatic Flash Effect */
+.chromatic-flash {
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle,
+    var(--gold-bright) 0%,
+    var(--mint) 33%,
+    var(--rose) 66%,
+    var(--gold-bright) 100%
+  );
+  filter: blur(12px);
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Energy Ring Animation */
+.energy-ring {
+  position: absolute;
+  inset: -2px;
+  border: 3px solid var(--pulse-color, var(--gold));
+  border-radius: inherit;
+  opacity: 1;
+  pointer-events: none;
+  filter: blur(1px);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .pulse-button {
+    width: 120px;
+    height: 120px;
+  }
+
+  .pulse-icon {
+    font-size: 32px;
+  }
+
+  .pulse-label {
+    font-size: 14px;
+  }
+
+  .intensity-dots {
+    bottom: 10px;
+  }
+
+  .intensity-dot {
+    width: 5px;
+    height: 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .pulse-button {
+    width: 100px;
+    height: 100px;
+  }
+
+  .pulse-icon {
+    font-size: 28px;
+  }
+
+  .pulse-label {
+    font-size: 12px;
+  }
+
+  .intensity-dots {
+    bottom: 8px;
+    gap: 3px;
+  }
+
+  .intensity-dot {
+    width: 4px;
+    height: 4px;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .pulse-button {
+    transition: none;
+  }
+
+  .chromatic-flash,
+  .energy-ring {
+    display: none;
+  }
+
+  .pulse-button:hover {
+    transform: none;
+  }
+}

@@ -1,0 +1,262 @@
+/* RoarButton - Hero Pulse Action (200px Circular) */
+
+.roar-button {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 3px solid var(--gold);
+  background: 
+    radial-gradient(circle at 30% 30%, var(--action-hover), transparent 70%),
+    var(--glass-darker);
+  color: var(--gold);
+  cursor: pointer;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  transition: all var(--duration-normal) var(--ease-out);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: 
+    var(--shadow-lg),
+    0 0 80px rgba(245, 197, 24, 0.2),
+    inset 0 2px 12px rgba(245, 197, 24, 0.15);
+}
+
+/* Base Glow Layer */
+.roar-glow {
+  position: absolute;
+  inset: -20px;
+  background: radial-gradient(
+    circle,
+    rgba(245, 197, 24, 0.25) 0%,
+    rgba(61, 255, 154, 0.15) 50%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  opacity: 0.6;
+  filter: blur(20px);
+  pointer-events: none;
+  transition: opacity var(--duration-normal) var(--ease-out);
+}
+
+.roar-button:hover .roar-glow {
+  opacity: 1;
+}
+
+/* Hover State */
+.roar-button:hover {
+  border-color: var(--gold-bright);
+  box-shadow: 
+    var(--shadow-xl),
+    0 0 120px rgba(245, 197, 24, 0.4),
+    inset 0 2px 16px rgba(245, 197, 24, 0.25);
+  transform: translateY(-6px) scale(1.02);
+}
+
+/* Active/Pressed State */
+.roar-button:active,
+.roar-button.pressed {
+  transform: translateY(0) scale(0.97);
+  border-color: var(--gold-dim);
+}
+
+/* Disabled State */
+.roar-button.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+  border-color: var(--line);
+  color: var(--text-secondary);
+}
+
+/* Icon */
+.roar-icon {
+  font-size: 64px;
+  line-height: 1;
+  filter: drop-shadow(0 4px 16px rgba(245, 197, 24, 0.4));
+  animation: iconFloat 3s ease-in-out infinite;
+}
+
+@keyframes iconFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.roar-button:hover .roar-icon {
+  animation: iconPulse 0.8s ease-in-out infinite;
+}
+
+@keyframes iconPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+/* Label */
+.roar-label {
+  font-family: var(--font-data);
+  font-size: 32px;
+  font-weight: var(--weight-black);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  text-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(245, 197, 24, 0.3);
+  line-height: 1;
+}
+
+/* Energy Rings */
+.energy-rings {
+  position: absolute;
+  inset: -8px;
+  pointer-events: none;
+}
+
+.energy-ring-static {
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+  opacity: 0.4;
+  filter: blur(1px);
+}
+
+/* Expanding Energy Ring on Press */
+.energy-ring-expand {
+  position: absolute;
+  inset: 0;
+  border: 3px solid var(--gold-bright);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* Chromatic Burst */
+.chromatic-burst {
+  position: absolute;
+  inset: -40px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    var(--gold-bright) 0deg,
+    var(--mint) 90deg,
+    var(--rose) 180deg,
+    var(--gold-bright) 270deg,
+    var(--gold-bright) 360deg
+  );
+  filter: blur(30px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Particle Burst Effect */
+.particle-burst {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: var(--gold-bright);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--gold);
+  top: 50%;
+  left: 50%;
+}
+
+/* Cooldown Overlay */
+.cooldown-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    transparent 40%,
+    rgba(0, 0, 0, 0.7) 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.cooldown-text {
+  font-family: var(--font-data);
+  font-size: 48px;
+  font-weight: var(--weight-black);
+  color: var(--text-secondary);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .roar-button {
+    width: 160px;
+    height: 160px;
+    border-width: 2px;
+  }
+
+  .roar-icon {
+    font-size: 48px;
+  }
+
+  .roar-label {
+    font-size: 24px;
+  }
+
+  .roar-glow {
+    inset: -16px;
+  }
+
+  .cooldown-text {
+    font-size: 36px;
+  }
+}
+
+@media (max-width: 480px) {
+  .roar-button {
+    width: 140px;
+    height: 140px;
+  }
+
+  .roar-icon {
+    font-size: 40px;
+  }
+
+  .roar-label {
+    font-size: 20px;
+  }
+
+  .roar-glow {
+    inset: -12px;
+  }
+
+  .cooldown-text {
+    font-size: 28px;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .roar-button,
+  .roar-icon,
+  .roar-glow {
+    transition: none;
+    animation: none;
+  }
+
+  .roar-button:hover {
+    transform: none;
+  }
+
+  .chromatic-burst,
+  .energy-ring-expand,
+  .particle-burst {
+    display: none;
+  }
+}

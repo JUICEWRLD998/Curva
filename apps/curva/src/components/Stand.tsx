@@ -1,6 +1,8 @@
 import { FormEvent, useMemo, useState } from 'react'
 import type { MatchPhase, RoomState } from '@/types/curva'
 import { PulseWave } from './PulseWave'
+import { PulseButton } from './PulseButton'
+import { RoarButton } from './RoarButton'
 import { playHit } from '@/lib/audio'
 
 interface Props {
@@ -23,13 +25,14 @@ const REACTIONS: Array<{
   kind: string
   label: string
   intensity: number
+  icon: string
   roar?: boolean
 }> = [
-  { kind: 'goal', label: 'GOAL', intensity: 5 },
-  { kind: 'save', label: 'SAVE', intensity: 3 },
-  { kind: 'foul', label: 'FOUL', intensity: 2 },
-  { kind: 'card', label: 'CARD', intensity: 2 },
-  { kind: 'roar', label: 'ROAR', intensity: 4, roar: true }
+  { kind: 'goal', label: 'GOAL', intensity: 5, icon: '⚽' },
+  { kind: 'save', label: 'SAVE', intensity: 3, icon: '🧤' },
+  { kind: 'foul', label: 'FOUL', intensity: 2, icon: '🚨' },
+  { kind: 'card', label: 'CARD', intensity: 2, icon: '🟨' },
+  { kind: 'roar', label: 'ROAR', intensity: 4, icon: '⚡', roar: true }
 ]
 
 export function Stand({
@@ -125,34 +128,33 @@ export function Stand({
           </div>
 
           {/* Pulse Reaction Buttons */}
-          <div className="react-pad">
+          <div className="pulse-grid">
             {REACTIONS.filter(r => !r.roar).map((r) => (
-              <button
+              <PulseButton
                 key={r.kind}
-                type="button"
+                kind={r.kind}
+                label={r.label}
+                intensity={r.intensity}
+                icon={r.icon}
                 onClick={() => {
                   onPulse(r.kind, r.intensity)
                   setBump((b) => b + 1)
                   playHit(r.kind === 'goal' ? 'hard' : 'soft')
                 }}
-              >
-                {r.label}
-              </button>
+              />
             ))}
           </div>
 
           {/* ROAR Button - Hero Position */}
-          <button
-            type="button"
-            className="react-pad roar"
-            onClick={() => {
-              onPulse('roar', 4)
-              setBump((b) => b + 1)
-              playHit('hard')
-            }}
-          >
-            ⚡ ROAR ⚡
-          </button>
+          <div className="roar-hero">
+            <RoarButton
+              onClick={() => {
+                onPulse('roar', 4)
+                setBump((b) => b + 1)
+                playHit('hard')
+              }}
+            />
+          </div>
 
           {/* Chant Circles */}
           <div className="glass chant-section">
