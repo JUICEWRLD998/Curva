@@ -175,6 +175,18 @@ export function RoarButton({ disabled = false, cooldown = 0, energy = 100, onCli
       {/* Label */}
       <span className="roar-label">ROAR</span>
 
+      {/* Energy Level Display */}
+      {!isDisabled && energy < 100 && (
+        <motion.div 
+          className="energy-display"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.8 }}
+        >
+          <span className="energy-value">{Math.round(energy)}%</span>
+        </motion.div>
+      )}
+
       {/* Cooldown Overlay */}
       <AnimatePresence>
         {timeRemaining > 0 && (

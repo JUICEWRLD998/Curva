@@ -149,10 +149,14 @@ export function Stand({
           {/* ROAR Button - Hero Position */}
           <div className="roar-hero">
             <RoarButton
+              energy={room.energy}
               onClick={() => {
                 onPulse('roar', 4)
                 setBump((b) => b + 1)
                 playHit('hard')
+                // Trigger screen shake
+                document.body.classList.add('screen-shake')
+                setTimeout(() => document.body.classList.remove('screen-shake'), 500)
               }}
             />
           </div>
