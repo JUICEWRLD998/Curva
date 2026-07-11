@@ -202,7 +202,9 @@
 @media (max-width: 768px) {
   .chant-card {
     padding: var(--space-3);
-    min-height: 100px;
+    min-height: 110px;
+    /* Ensure minimum touch target size */
+    min-width: 48px;
   }
 
   .chant-label {
@@ -216,6 +218,26 @@
   .progress-dot {
     width: 8px;
     height: 8px;
+  }
+
+  .chant-status {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .chant-card {
+    padding: var(--space-3) var(--space-2);
+    min-height: 100px;
+  }
+
+  .chant-label {
+    font-size: var(--text-sm);
+  }
+
+  .progress-dot {
+    width: 7px;
+    height: 7px;
   }
 }
 
