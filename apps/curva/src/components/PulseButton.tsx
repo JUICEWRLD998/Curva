@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import './PulseButton.css'
 
 interface Props {
@@ -8,14 +8,42 @@ interface Props {
   intensity: number
   icon?: string
   disabled?: boolean
+  energyCost?: number // Percentage of energy required (0-100)
+  cooldown?: number // Cooldown in seconds
   onClick: () => void
 }
 
-export function PulseButton({ kind, label, intensity, icon, disabled = false, onClick }: Props) {
+export function PulseButton({ 
+  kind, 
+  label, 
+  intensity, 
+  icon, 
+  disabled = false, 
+  energyCost = 20,
+  cooldown = 0,
+  onClick 
+}: Props) {
   const [isPressed, setIsPressed] = useState(false)
+  const [timeRemaining, setTimeRemaining] = useState(0)
+
+  useEffect(() => {
+    if (cooldown > 0) {
+      setTimeRemaining(cooldown)
+      const interval = setInterval(() => {
+        setTimeRemaining((prev) => {
+          if (prev <= 0.1) {
+            clearInterval(interval)
+            return 0
+          }
+          return prev - 0.1
+        })
+      }, 100)
+      return () => clearInterval(interval)
+    }
+  }, [cooldown])
 
   const handleClick = () => {
-    if (disabled) return
+    if (disabled || timeRemaining > 0) return
     
     setIsPressed(true)
     onClick()
@@ -30,14 +58,17 @@ export function PulseButton({ kind, label, intensity, icon, disabled = false, on
     return 'var(--mint)'
   }
 
+  const isDisabled = disabled || timeRemaining > 0
+  const cooldownProgress = cooldown > 0 ? (1 - timeRemaining / cooldown) * 100 : 100
+
   return (
     <motion.button
       type="button"
-      className={`pulse-button ${disabled ? 'disabled' : ''} ${isPressed ? 'pressed' : ''}`}
+      className={`pulse-button ${isDisabled ? 'disabled' : ''} ${isPressed ? 'pressed' : ''}`}
       onClick={handleClick}
-      disabled={disabled}
-      whileHover={{ scale: disabled ? 1 : 1.05, y: disabled ? 0 : -4 }}
-      whileTap={{ scale: disabled ? 1 : 0.95 }}
+      disabled={isDisabled}
+      whileHover={{ scale: isDisabled ? 1 : 1.05, y: isDisabled ? 0 : -4 }}
+      whileTap={{ scale: isDisabled ? 1 : 0.94 }}
       style={{
         '--pulse-color': getIntensityColor(),
       } as React.CSSProperties}
@@ -46,13 +77,40 @@ export function PulseButton({ kind, label, intensity, icon, disabled = false, on
       <div className="pulse-glow" />
       
       {/* Chromatic Flash Effect */}
-      {isPressed && (
-        <motion.div
-          className="chromatic-flash"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: [0, 1, 0], scale: [0.8, 1.4, 1.8] }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-        />
+      <AnimatePresence>
+        {isPressed && (
+          <motion.div
+            className="chromatic-flash"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: [0, 1, 0], scale: [0.8, 1.4, 1.8] }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Cooldown Progress Ring */}
+      {timeRemaining > 0 && (
+        <svg className="cooldown-ring" viewBox="0 0 100 100">
+          <circle
+            className="cooldown-ring-bg"
+            cx="50"
+            cy="50"
+            r="48"
+          />
+          <motion.circle
+            className="cooldown-ring-progress"
+            cx="50"
+            cy="50"
+            r="48"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: cooldownProgress / 100 }}
+            transition={{ duration: 0.1, ease: 'linear' }}
+            style={{
+              pathLength: cooldownProgress / 100,
+            }}
+          />
+        </svg>
       )}
 
       {/* Icon or Emoji */}
@@ -65,6 +123,14 @@ export function PulseButton({ kind, label, intensity, icon, disabled = false, on
       {/* Label */}
       <span className="pulse-label">{label}</span>
 
+      {/* Energy Cost Bar */}
+      <div className="energy-cost-bar">
+        <div 
+          className="energy-cost-fill" 
+          style={{ width: `${energyCost}%` }}
+        />
+      </div>
+
       {/* Intensity Indicator */}
       <div className="intensity-dots" aria-label={`Intensity: ${intensity}`}>
         {Array.from({ length: 5 }).map((_, i) => (
@@ -75,15 +141,32 @@ export function PulseButton({ kind, label, intensity, icon, disabled = false, on
         ))}
       </div>
 
-      {/* Energy Ring Animation */}
-      {isPressed && (
-        <motion.div
-          className="energy-ring"
-          initial={{ scale: 1, opacity: 1 }}
-          animate={{ scale: 2, opacity: 0 }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-        />
-      )}
+      {/* Energy Ring Animation on Press */}
+      <AnimatePresence>
+        {isPressed && (
+          <motion.div
+            className="energy-ring"
+            initial={{ scale: 1, opacity: 1 }}
+            animate={{ scale: 2, opacity: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.6, ease: 'easeOut' }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Cooldown Timer Display */}
+      <AnimatePresence>
+        {timeRemaining > 0 && (
+          <motion.div
+            className="cooldown-timer"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <span>{Math.ceil(timeRemaining)}s</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.button>
   )
 }
