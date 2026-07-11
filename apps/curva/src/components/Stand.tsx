@@ -4,6 +4,8 @@ import { PulseWave } from './PulseWave'
 import { PulseButton } from './PulseButton'
 import { RoarButton } from './RoarButton'
 import { ChantGrid } from './ChantGrid'
+import { FloatingSidebar } from './FloatingSidebar'
+import { Scoreboard } from './Scoreboard'
 import { playHit } from '@/lib/audio'
 
 interface Props {
@@ -51,6 +53,10 @@ export function Stand({
   const [awayScore, setAwayScore] = useState(1)
   const [scorer, setScorer] = useState('')
   const [bump, setBump] = useState(0)
+  
+  // Floating sidebar states
+  const [isPeersOpen, setIsPeersOpen] = useState(false)
+  const [isSealsOpen, setIsSealsOpen] = useState(false)
 
   const title = useMemo(
     () => `${room.matchMeta?.home || 'Home'} vs ${room.matchMeta?.away || 'Away'}`,
@@ -73,18 +79,6 @@ export function Stand({
           </div>
         </div>
         <div className="stand-meta">
-          <div className="phase-pills">
-            {(['prematch', 'live', 'fulltime'] as MatchPhase[]).map((p) => (
-              <button
-                key={p}
-                type="button"
-                className={room.phase === p ? 'active' : ''}
-                onClick={() => onPhase(p)}
-              >
-                {p === 'prematch' ? 'Prematch' : p === 'live' ? 'Live' : 'Full time'}
-              </button>
-            ))}
-          </div>
           <div className="chip live-chip">
             <span className="dot" />
             {room.peerCount} in the curva
@@ -96,12 +90,16 @@ export function Stand({
       </header>
 
       <div className="stand">
-        {/* Full-Width Scoreboard */}
-        <div className="glass scoreboard">
-          <div className="team">{room.matchMeta?.home || 'Home'}</div>
-          <div className="vs">VS</div>
-          <div className="team">{room.matchMeta?.away || 'Away'}</div>
-        </div>
+        {/* Full-Width Scoreboard - STADIUM SCALE */}
+        <Scoreboard
+          home={room.matchMeta?.home || 'Home'}
+          away={room.matchMeta?.away || 'Away'}
+          homeScore={room.phase === 'prematch' ? undefined : 0}
+          awayScore={room.phase === 'prematch' ? undefined : 0}
+          phase={room.phase}
+          possession={room.phase === 'live' ? { home: 55, away: 45 } : undefined}
+          onPhaseChange={onPhase}
+        />
 
         {/* Main Content Area - Centered */}
         <div className="stand-main">
@@ -165,19 +163,176 @@ export function Stand({
           />
 
           {/* Floating Sidebar Triggers */}
-          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button className="btn btn-ghost">
-              👥 {room.peerCount} Fans
+          <div className="sidebar-triggers">
+            <button 
+              className="btn btn-ghost"
+              onClick={() => setIsPeersOpen(true)}
+              type="button"
+            >
+              👥 {room.peerCount} {room.peerCount === 1 ? 'Fan' : 'Fans'}
             </button>
-            <button className="btn btn-ghost">
-              🔒 {room.seals.length} Seals
+            <button 
+              className="btn btn-ghost"
+              onClick={() => setIsSealsOpen(true)}
+              type="button"
+            >
+              🔒 {room.seals.length} {room.seals.length === 1 ? 'Seal' : 'Seals'}
             </button>
-            <button className="btn btn-ghost" onClick={onCopyCapsule}>
+            <button 
+              className="btn btn-ghost" 
+              onClick={onCopyCapsule}
+              type="button"
+            >
               📦 Capsule
             </button>
           </div>
         </div>
       </div>
+
+      {/* Floating Sidebar - Peers & Capsule */}
+      <FloatingSidebar
+        isOpen={isPeersOpen}
+        onClose={() => setIsPeersOpen(false)}
+        side="left"
+        title="The Stand"
+      >
+        <div className="sidebar-section">
+          <h4>Fans in the Curva</h4>
+          <p className="text-muted">
+            {room.peerCount} {room.peerCount === 1 ? 'fan' : 'fans'} connected to the swarm
+          </p>
+        </div>
+
+        <ul className="side-list">
+          {room.peers.map((p) => (
+            <li key={p.id}>
+              <span className="dot" style={{ background: p.color }} />
+              <span>
+                {p.name}
+                {p.self ? ' (you)' : ''}
+              </span>
+            </li>
+          ))}
+        </ul>
+
+        <div className="sidebar-section" style={{ marginTop: 'auto', paddingTop: 'var(--space-5)', borderTop: '1px solid var(--line)' }}>
+          <h4>Match Capsule</h4>
+          <p className="text-muted">
+            Append-only Hypercore · {room.historyCount} events recorded
+          </p>
+          {room.capsuleKey ? (
+            <>
+              <code style={{
+                display: 'block',
+                padding: 'var(--space-2)',
+                borderRadius: 'var(--radius-sm)',
+                background: 'var(--pitch-950)',
+                color: 'var(--gold)',
+                fontSize: 'var(--text-xs)',
+                wordBreak: 'break-all',
+                maxHeight: '72px',
+                overflow: 'auto',
+                fontFamily: 'monospace'
+              }}>
+                {room.capsuleKey}
+              </code>
+              <button 
+                className="btn btn-ghost btn-sm" 
+                type="button" 
+                onClick={onCopyCapsule}
+                style={{ width: '100%', marginTop: 'var(--space-2)' }}
+              >
+                Copy Key
+              </button>
+            </>
+          ) : (
+            <p className="text-muted">No capsule key yet</p>
+          )}
+        </div>
+      </FloatingSidebar>
+
+      {/* Floating Sidebar - Seals */}
+      <FloatingSidebar
+        isOpen={isSealsOpen}
+        onClose={() => setIsSealsOpen(false)}
+        side="right"
+        title="Prediction Seals"
+      >
+        <div className="sidebar-section">
+          <h4>Lock Your Pick</h4>
+          <p className="text-muted">
+            One seal per curva · Stored on your Hypercore
+          </p>
+        </div>
+
+        <form onSubmit={sealSubmit}>
+          <label className="field">
+            <span>Winner</span>
+            <select value={winner} onChange={(e) => setWinner(e.target.value as typeof winner)}>
+              <option value="home">{room.matchMeta?.home || 'Home'}</option>
+              <option value="away">{room.matchMeta?.away || 'Away'}</option>
+              <option value="draw">Draw</option>
+            </select>
+          </label>
+          <div className="row2">
+            <label className="field">
+              <span>Home Score</span>
+              <input
+                type="number"
+                min={0}
+                max={20}
+                value={homeScore}
+                onChange={(e) => setHomeScore(Number(e.target.value))}
+              />
+            </label>
+            <label className="field">
+              <span>Away Score</span>
+              <input
+                type="number"
+                min={0}
+                max={20}
+                value={awayScore}
+                onChange={(e) => setAwayScore(Number(e.target.value))}
+              />
+            </label>
+          </div>
+          <label className="field">
+            <span>First Scorer (optional)</span>
+            <input 
+              value={scorer} 
+              maxLength={40} 
+              onChange={(e) => setScorer(e.target.value)}
+              placeholder="Player name"
+            />
+          </label>
+          <button className="btn btn-primary" type="submit" style={{ width: '100%' }}>
+            Seal Prediction
+          </button>
+        </form>
+
+        <div className="sidebar-section" style={{ marginTop: 'var(--space-5)', paddingTop: 'var(--space-5)', borderTop: '1px solid var(--line)' }}>
+          <h4>Sealed Predictions</h4>
+          {room.seals.length === 0 ? (
+            <p className="text-muted">No seals yet — lock your pick before the roar.</p>
+          ) : (
+            <ul className="side-list">
+              {room.seals.map((s) => (
+                <li key={`${s.peerId}-${s.sealedAt}`}>
+                  <span className="dot" style={{ background: s.color }} />
+                  <div style={{ flex: 1 }}>
+                    <strong>{s.name}</strong>
+                    <div className="text-muted" style={{ fontSize: 'var(--text-xs)' }}>
+                      {s.pick
+                        ? `${s.pick.winner} · ${s.pick.homeScore}-${s.pick.awayScore}`
+                        : s.commitment.slice(0, 10) + '…'}
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </FloatingSidebar>
 
       {/* Eruption Overlay */}
       {eruption && (
@@ -187,100 +342,6 @@ export function Stand({
           </div>
         </div>
       )}
-
-      {/* TODO: Floating Sidebars - Will be added in next task */}
-      {/* Hidden for now - accessible via triggers */}
-      <div style={{ display: 'none' }}>
-        <aside className="glass side">
-          <h3>The Stand</h3>
-          <ul className="side-list">
-            {room.peers.map((p) => (
-              <li key={p.id}>
-                <span className="dot" style={{ background: p.color }} />
-                <span>
-                  {p.name}
-                  {p.self ? ' (you)' : ''}
-                </span>
-              </li>
-            ))}
-          </ul>
-
-          <div className="capsule">
-            <h3>Match Capsule</h3>
-            <p className="text-muted">
-              Append-only Hypercore of this night · {room.historyCount} events
-            </p>
-            <code>{room.capsuleKey || '—'}</code>
-            <button className="btn btn-ghost btn-sm" type="button" onClick={onCopyCapsule}>
-              Copy key
-            </button>
-          </div>
-        </aside>
-
-        <aside className="glass side">
-          <h3>Prediction Seals</h3>
-          <p className="text-muted">One seal per curva · locked on your Hypercore</p>
-          <form onSubmit={sealSubmit}>
-            <label className="field">
-              <span>Winner</span>
-              <select value={winner} onChange={(e) => setWinner(e.target.value as typeof winner)}>
-                <option value="home">Home</option>
-                <option value="away">Away</option>
-                <option value="draw">Draw</option>
-              </select>
-            </label>
-            <div className="row2">
-              <label className="field">
-                <span>Home</span>
-                <input
-                  type="number"
-                  min={0}
-                  max={20}
-                  value={homeScore}
-                  onChange={(e) => setHomeScore(Number(e.target.value))}
-                />
-              </label>
-              <label className="field">
-                <span>Away</span>
-                <input
-                  type="number"
-                  min={0}
-                  max={20}
-                  value={awayScore}
-                  onChange={(e) => setAwayScore(Number(e.target.value))}
-                />
-              </label>
-            </div>
-            <label className="field">
-              <span>First scorer (optional)</span>
-              <input value={scorer} maxLength={40} onChange={(e) => setScorer(e.target.value)} />
-            </label>
-            <button className="btn btn-primary" type="submit">
-              Seal Prediction
-            </button>
-          </form>
-
-          <ul className="side-list">
-            {room.seals.length === 0 ? (
-              <li className="text-muted">No seals yet — lock your pick before the roar.</li>
-            ) : (
-              room.seals.map((s) => (
-                <li key={`${s.peerId}-${s.sealedAt}`}>
-                  <span className="dot" style={{ background: s.color }} />
-                  <div>
-                    <strong>{s.name}</strong>
-                    <div className="text-muted">
-                      {s.pick
-                        ? `${s.pick.winner} · ${s.pick.homeScore}-${s.pick.awayScore}`
-                        : s.commitment.slice(0, 10) + '…'}
-                    </div>
-                  </div>
-                </li>
-              ))
-            )}
-          </ul>
-        </aside>
-      </div>
     </>
   )
 }
