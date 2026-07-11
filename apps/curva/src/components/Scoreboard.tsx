@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import type { MatchPhase } from '@/types/curva'
+import { playClick } from '@/lib/audio'
 import './Scoreboard.css'
 
 interface Props {
@@ -115,7 +116,10 @@ export function Scoreboard({
                 key={p}
                 type="button"
                 className={`phase-pill ${phase === p ? 'active' : ''}`}
-                onClick={() => onPhaseChange(p)}
+                onClick={() => {
+                  playClick()
+                  onPhaseChange(p)
+                }}
               >
                 {p === 'prematch' ? 'Prematch' : p === 'live' ? 'Live' : 'Full Time'}
               </button>

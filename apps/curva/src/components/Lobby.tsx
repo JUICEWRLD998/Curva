@@ -2,6 +2,7 @@ import { FormEvent, useState } from 'react'
 import { motion } from 'framer-motion'
 import type { Identity, MatchMeta } from '@/types/curva'
 import { lobbyAnimations, cardVariants } from '@/lib/motion'
+import { playClick } from '@/lib/audio'
 
 interface Props {
   identity: Identity
@@ -20,11 +21,13 @@ export function Lobby({ identity, onSaveProfile, onCreate, onJoin }: Props) {
 
   const saveProfile = (e: FormEvent) => {
     e.preventDefault()
+    playClick()
     onSaveProfile(name.trim() || 'Fan', color)
   }
 
   const create = (e: FormEvent) => {
     e.preventDefault()
+    playClick()
     onCreate({
       home: home.trim() || 'Home',
       away: away.trim() || 'Away',
@@ -34,6 +37,7 @@ export function Lobby({ identity, onSaveProfile, onCreate, onJoin }: Props) {
 
   const join = (e: FormEvent) => {
     e.preventDefault()
+    playClick()
     onJoin(code.trim())
   }
 

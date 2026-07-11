@@ -1,4 +1,7 @@
+import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { playEruption } from '@/lib/audio'
+import { triggerHaptic, triggerScreenShake } from '@/lib/motion'
 import './EruptionOverlay.css'
 
 interface Props {
@@ -7,6 +10,15 @@ interface Props {
 }
 
 export function EruptionOverlay({ chantLabel, onComplete }: Props) {
+  // Play eruption sound and trigger haptics when chant erupts
+  useEffect(() => {
+    if (chantLabel) {
+      playEruption()
+      triggerHaptic('heavy')
+      triggerScreenShake('heavy')
+    }
+  }, [chantLabel])
+
   // Generate confetti particles
   const confetti = Array.from({ length: 40 }).map((_, i) => ({
     id: i,

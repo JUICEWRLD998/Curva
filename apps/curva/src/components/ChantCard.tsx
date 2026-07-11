@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { playClick } from '@/lib/audio'
 import './ChantCard.css'
 
 interface Props {
@@ -22,11 +23,16 @@ export function ChantCard({
 }: Props) {
   const progress = maxVoices > 0 ? voiceCount / maxVoices : 0
 
+  const handleClick = () => {
+    playClick()
+    onClick()
+  }
+
   return (
     <motion.button
       type="button"
       className={`chant-card ${isActive ? 'active' : 'idle'}`}
-      onClick={onClick}
+      onClick={handleClick}
       whileHover={{ scale: 1.03, y: -2 }}
       whileTap={{ scale: 0.97 }}
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}

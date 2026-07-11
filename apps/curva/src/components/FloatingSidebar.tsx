@@ -1,5 +1,6 @@
 import { ReactNode } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { playClick } from '@/lib/audio'
 import './FloatingSidebar.css'
 
 interface Props {
@@ -11,6 +12,11 @@ interface Props {
 }
 
 export function FloatingSidebar({ isOpen, onClose, side, title, children }: Props) {
+  const handleClose = () => {
+    playClick()
+    onClose()
+  }
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -22,7 +28,7 @@ export function FloatingSidebar({ isOpen, onClose, side, title, children }: Prop
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            onClick={onClose}
+            onClick={handleClose}
           />
 
           {/* Floating Sidebar Panel */}
@@ -52,7 +58,7 @@ export function FloatingSidebar({ isOpen, onClose, side, title, children }: Prop
               <button 
                 type="button"
                 className="sidebar-close"
-                onClick={onClose}
+                onClick={handleClose}
                 aria-label="Close sidebar"
               >
                 ✕
