@@ -37,87 +37,115 @@ export function Lobby({ identity, onSaveProfile, onCreate, onJoin }: Props) {
 
   return (
     <div className="lobby">
+      {/* Hero Section - Centered, Full Width */}
       <section className="hero">
         <p className="eyebrow">Football · Peer to peer · Zero infrastructure</p>
-        <h1>The stand has no server.</h1>
+        <h1 className="display">The stand has no server.</h1>
         <p>
           CURVA is a real P2P matchday product. Create a room, share a code, and become one organism when
           the ball hits the net — Hyperswarm pulse, chant circles, sealed predictions, immortal capsules.
         </p>
 
+        {/* Enhanced Pitch Card */}
         <div className="glass pitch-card">
-          <div className="pitch-lines" aria-hidden />
+          <div className="pitch-lines" aria-hidden="true" />
           <div className="copy">
             <p className="eyebrow">Built for the global tournament moment</p>
-            <h2 className="display" style={{ margin: '8px 0 6px', fontSize: 28 }}>
-              Feel the curva from anywhere on earth.
-            </h2>
-            <p className="muted" style={{ margin: 0, maxWidth: '42ch' }}>
+            <h2>Feel the curva from anywhere on earth.</h2>
+            <p className="text-muted">
               No Discord host. No cloud chat bill. Your room lives on the swarm — and the night can be seeded forever.
             </p>
             <div className="feature-grid">
               <div className="feature">
                 <b>01 · PULSE</b>
-                <span className="muted tiny">Crowd energy over Hyperswarm</span>
+                <span className="text-muted">Crowd energy over Hyperswarm</span>
               </div>
               <div className="feature">
                 <b>02 · CHANTS</b>
-                <span className="muted tiny">Erupt when voices align</span>
+                <span className="text-muted">Erupt when voices align</span>
               </div>
               <div className="feature">
                 <b>03 · SEALS</b>
-                <span className="muted tiny">Picks locked on Hypercore</span>
+                <span className="text-muted">Picks locked on Hypercore</span>
               </div>
               <div className="feature">
                 <b>04 · CAPSULE</b>
-                <span className="muted tiny">Append-only match memory</span>
+                <span className="text-muted">Append-only match memory</span>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <aside className="stack">
+      {/* Action Cards - Horizontal Grid */}
+      <div className="action-cards">
+        {/* Profile Card */}
         <form className="glass panel" onSubmit={saveProfile}>
-          <h3>Your kit</h3>
+          <h3>Your Kit</h3>
           <label className="field">
-            Display name
-            <input value={name} maxLength={24} onChange={(e) => setName(e.target.value)} />
+            <span>Display Name</span>
+            <input 
+              value={name} 
+              maxLength={24} 
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Enter your name"
+            />
           </label>
           <label className="field">
-            Color
-            <input type="color" value={color} onChange={(e) => setColor(e.target.value)} />
+            <span>Fan Color</span>
+            <input 
+              type="color" 
+              value={color} 
+              onChange={(e) => setColor(e.target.value)} 
+            />
           </label>
           <button className="btn btn-ghost" type="submit">
-            Save kit
+            Save Kit
           </button>
         </form>
 
+        {/* Create Room Card */}
         <form className="glass panel accent" onSubmit={create}>
-          <h3>Open a curva</h3>
+          <h3>Open a Curva</h3>
           <div className="row2">
             <label className="field">
-              Home
-              <input value={home} maxLength={28} onChange={(e) => setHome(e.target.value)} />
+              <span>Home Team</span>
+              <input 
+                value={home} 
+                maxLength={28} 
+                onChange={(e) => setHome(e.target.value)}
+                placeholder="Brazil"
+              />
             </label>
             <label className="field">
-              Away
-              <input value={away} maxLength={28} onChange={(e) => setAway(e.target.value)} />
+              <span>Away Team</span>
+              <input 
+                value={away} 
+                maxLength={28} 
+                onChange={(e) => setAway(e.target.value)}
+                placeholder="Germany"
+              />
             </label>
           </div>
           <label className="field">
-            Fixture label
-            <input value={label} maxLength={48} onChange={(e) => setLabel(e.target.value)} />
+            <span>Fixture Label</span>
+            <input 
+              value={label} 
+              maxLength={48} 
+              onChange={(e) => setLabel(e.target.value)}
+              placeholder="World Stage · Group Night"
+            />
           </label>
-          <button className="btn btn-primary" type="submit" style={{ width: '100%' }}>
-            Create room code
+          <button className="btn btn-primary btn-lg" type="submit">
+            Create Room Code
           </button>
         </form>
 
+        {/* Join Room Card */}
         <form className="glass panel" onSubmit={join}>
-          <h3>Join a curva</h3>
+          <h3>Join a Curva</h3>
           <label className="field">
-            Room code
+            <span>Room Code</span>
             <input
               value={code}
               placeholder="CV-XXXXXX"
@@ -126,11 +154,11 @@ export function Lobby({ identity, onSaveProfile, onCreate, onJoin }: Props) {
               onChange={(e) => setCode(e.target.value.toUpperCase())}
             />
           </label>
-          <button className="btn btn-mint" type="submit" style={{ width: '100%' }}>
-            Enter the stand
+          <button className="btn btn-mint btn-lg" type="submit">
+            Enter the Stand
           </button>
         </form>
-      </aside>
+      </div>
     </div>
   )
 }

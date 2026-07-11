@@ -65,7 +65,7 @@ export function Stand({
           <div className="mark sm">C</div>
           <div>
             <strong>{title}</strong>
-            <span className="muted tiny">{room.roomCode} · {room.matchMeta?.label || 'Matchday'}</span>
+            <span className="text-muted">{room.roomCode} · {room.matchMeta?.label || 'Matchday'}</span>
           </div>
         </div>
         <div className="stand-meta">
@@ -92,40 +92,17 @@ export function Stand({
       </header>
 
       <div className="stand">
-        <aside className="col glass side">
-          <h3>The stand</h3>
-          <ul className="side-list">
-            {room.peers.map((p) => (
-              <li key={p.id}>
-                <span className="dot" style={{ background: p.color }} />
-                <span>
-                  {p.name}
-                  {p.self ? ' (you)' : ''}
-                </span>
-              </li>
-            ))}
-          </ul>
+        {/* Full-Width Scoreboard */}
+        <div className="glass scoreboard">
+          <div className="team">{room.matchMeta?.home || 'Home'}</div>
+          <div className="vs">VS</div>
+          <div className="team">{room.matchMeta?.away || 'Away'}</div>
+        </div>
 
-          <div className="capsule" style={{ borderTop: '1px solid var(--line)', paddingTop: 12 }}>
-            <h3 style={{ fontSize: 15 }}>Match Capsule</h3>
-            <p className="muted tiny" style={{ margin: '4px 0 0' }}>
-              Append-only Hypercore of this night · {room.historyCount} events
-            </p>
-            <code>{room.capsuleKey || '—'}</code>
-            <button className="btn btn-ghost btn-sm" type="button" onClick={onCopyCapsule}>
-              Copy key
-            </button>
-          </div>
-        </aside>
-
-        <section className="col center">
-          <div className="glass scoreboard">
-            <div className="team">{room.matchMeta?.home || 'Home'}</div>
-            <div className="vs">VS</div>
-            <div className="team">{room.matchMeta?.away || 'Away'}</div>
-          </div>
-
-          <div className="glass side energy-wrap">
+        {/* Main Content Area - Centered */}
+        <div className="stand-main">
+          {/* Energy Visualization */}
+          <div className="glass energy-wrap">
             <div className="energy-head">
               <h3>Crowd Pulse</h3>
               <span className="energy-num">{room.energy}</span>
@@ -147,16 +124,16 @@ export function Stand({
             </div>
           </div>
 
+          {/* Pulse Reaction Buttons */}
           <div className="react-pad">
-            {REACTIONS.map((r) => (
+            {REACTIONS.filter(r => !r.roar).map((r) => (
               <button
                 key={r.kind}
                 type="button"
-                className={r.roar ? 'roar' : ''}
                 onClick={() => {
                   onPulse(r.kind, r.intensity)
                   setBump((b) => b + 1)
-                  playHit(r.kind === 'goal' || r.kind === 'roar' ? 'hard' : 'soft')
+                  playHit(r.kind === 'goal' ? 'hard' : 'soft')
                 }}
               >
                 {r.label}
@@ -164,10 +141,24 @@ export function Stand({
             ))}
           </div>
 
-          <div className="glass side">
+          {/* ROAR Button - Hero Position */}
+          <button
+            type="button"
+            className="react-pad roar"
+            onClick={() => {
+              onPulse('roar', 4)
+              setBump((b) => b + 1)
+              playHit('hard')
+            }}
+          >
+            ⚡ ROAR ⚡
+          </button>
+
+          {/* Chant Circles */}
+          <div className="glass chant-section">
             <div className="energy-head">
               <h3>Chant Circles</h3>
-              <span className="muted tiny">Join the same chant — erupt together</span>
+              <span className="text-muted">Join the same chant — erupt together</span>
             </div>
             <div className="chant-grid">
               {room.chantsCatalog.map((c) => {
@@ -180,16 +171,67 @@ export function Stand({
                 )
               })}
             </div>
-            {eruption ? <div className="eruption">ERUPTION · {eruption}</div> : null}
           </div>
-        </section>
 
-        <aside className="col glass side">
+          {/* Floating Sidebar Triggers */}
+          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+            <button className="btn btn-ghost">
+              👥 {room.peerCount} Fans
+            </button>
+            <button className="btn btn-ghost">
+              🔒 {room.seals.length} Seals
+            </button>
+            <button className="btn btn-ghost" onClick={onCopyCapsule}>
+              📦 Capsule
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Eruption Overlay */}
+      {eruption && (
+        <div className="eruption">
+          <div className="eruption-text">
+            ERUPTION · {eruption}
+          </div>
+        </div>
+      )}
+
+      {/* TODO: Floating Sidebars - Will be added in next task */}
+      {/* Hidden for now - accessible via triggers */}
+      <div style={{ display: 'none' }}>
+        <aside className="glass side">
+          <h3>The Stand</h3>
+          <ul className="side-list">
+            {room.peers.map((p) => (
+              <li key={p.id}>
+                <span className="dot" style={{ background: p.color }} />
+                <span>
+                  {p.name}
+                  {p.self ? ' (you)' : ''}
+                </span>
+              </li>
+            ))}
+          </ul>
+
+          <div className="capsule">
+            <h3>Match Capsule</h3>
+            <p className="text-muted">
+              Append-only Hypercore of this night · {room.historyCount} events
+            </p>
+            <code>{room.capsuleKey || '—'}</code>
+            <button className="btn btn-ghost btn-sm" type="button" onClick={onCopyCapsule}>
+              Copy key
+            </button>
+          </div>
+        </aside>
+
+        <aside className="glass side">
           <h3>Prediction Seals</h3>
-          <p className="muted tiny">One seal per curva · locked on your Hypercore</p>
+          <p className="text-muted">One seal per curva · locked on your Hypercore</p>
           <form onSubmit={sealSubmit}>
             <label className="field">
-              Winner
+              <span>Winner</span>
               <select value={winner} onChange={(e) => setWinner(e.target.value as typeof winner)}>
                 <option value="home">Home</option>
                 <option value="away">Away</option>
@@ -198,7 +240,7 @@ export function Stand({
             </label>
             <div className="row2">
               <label className="field">
-                Home
+                <span>Home</span>
                 <input
                   type="number"
                   min={0}
@@ -208,7 +250,7 @@ export function Stand({
                 />
               </label>
               <label className="field">
-                Away
+                <span>Away</span>
                 <input
                   type="number"
                   min={0}
@@ -219,24 +261,24 @@ export function Stand({
               </label>
             </div>
             <label className="field">
-              First scorer (optional)
+              <span>First scorer (optional)</span>
               <input value={scorer} maxLength={40} onChange={(e) => setScorer(e.target.value)} />
             </label>
-            <button className="btn btn-primary" type="submit" style={{ width: '100%' }}>
-              Seal prediction
+            <button className="btn btn-primary" type="submit">
+              Seal Prediction
             </button>
           </form>
 
-          <ul className="side-list" style={{ marginTop: 12 }}>
+          <ul className="side-list">
             {room.seals.length === 0 ? (
-              <li className="muted">No seals yet — lock your pick before the roar.</li>
+              <li className="text-muted">No seals yet — lock your pick before the roar.</li>
             ) : (
               room.seals.map((s) => (
                 <li key={`${s.peerId}-${s.sealedAt}`}>
                   <span className="dot" style={{ background: s.color }} />
                   <div>
                     <strong>{s.name}</strong>
-                    <div className="muted tiny">
+                    <div className="text-muted">
                       {s.pick
                         ? `${s.pick.winner} · ${s.pick.homeScore}-${s.pick.awayScore}`
                         : s.commitment.slice(0, 10) + '…'}
