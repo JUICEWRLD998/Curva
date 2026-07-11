@@ -60,6 +60,8 @@ a {
   background: conic-gradient(from 210deg, #ffe56a, #3dff9a, #f5c518, #ffe56a);
   color: #0a1008;
   font-weight: 800;
+  font-size: 20px;
+  font-family: var(--display);
 }
 
 .hero {

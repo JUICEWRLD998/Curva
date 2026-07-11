@@ -234,6 +234,170 @@ The **Match Capsule** is an append-only log of the entire session.
 
 ## Advanced Testing
 
+### Test Accessibility Features (NEW - Week 5 Polish)
+
+**Keyboard Navigation:**
+1. Press `Tab` key to navigate through interactive elements
+2. Verify focus indicators (gold outline) appear on all buttons
+3. Test button activation:
+   - On any button, press `Enter` or `Space` to activate
+   - Should work on: Pulse buttons, ROAR, Chant cards, Phase pills
+4. Use `Tab` + `Shift+Tab` to navigate backwards
+5. Try keyboard-only flow:
+   - Navigate to Create Room form
+   - Fill fields with keyboard
+   - Submit with `Enter`
+   - Navigate Stand view entirely with keyboard
+
+**Screen Reader Support:**
+1. Enable screen reader (Windows: Narrator, Mac: VoiceOver)
+2. Navigate through app - verify all elements are announced
+3. Check ARIA labels on buttons describe their purpose
+4. Verify live regions announce:
+   - Energy level changes
+   - Toast notifications
+   - Possession bar updates
+
+**Skip to Main Content:**
+1. On app load, press `Tab` once
+2. "Skip to main content" link should appear at top
+3. Press `Enter` - should jump directly to main content
+
+**Reduced Motion:**
+1. Enable reduced motion in OS settings:
+   - Windows: Settings → Accessibility → Visual effects → Animation effects OFF
+   - Mac: System Preferences → Accessibility → Display → Reduce motion ON
+2. Reload app
+3. Verify animations are minimal/instant (no spinning, sliding, scaling)
+
+**Focus Management:**
+1. Open floating sidebar (click "👥 X Fans")
+2. Verify focus moves into sidebar
+3. Press `Esc` or click close - focus returns to trigger button
+
+**Color Contrast:**
+1. Verify all text is readable on backgrounds
+2. Gold/Mint/Rose colors should be vibrant but not strain eyes
+3. Glass panels should have sufficient contrast
+
+---
+
+### Test Performance (NEW - Week 5 Polish)
+
+**60fps Animations:**
+1. Open browser DevTools → Performance tab
+2. Start recording
+3. Press GOAL button multiple times rapidly
+4. Stop recording
+5. Verify frame rate stays at 60fps (green line at top)
+6. Check for no red frames (dropped frames)
+
+**Waveform Performance:**
+1. Let waveform run for 2+ minutes
+2. Monitor CPU usage (should stay reasonable)
+3. Verify smooth animation with no stuttering
+4. On lower-end devices, should still maintain smooth motion
+
+**Smooth Scrolling:**
+1. On Lobby view, scroll up and down
+2. Should feel smooth, not janky
+3. On mobile/touch devices, test touch scrolling
+
+**Button Responsiveness:**
+1. Press any button - visual feedback should be instant (<100ms)
+2. No lag between click and animation
+3. Haptic feedback (on mobile) should be immediate
+
+**Energy Bar Transitions:**
+1. Fire multiple pulses rapidly
+2. Energy bar should animate smoothly, not jump
+3. Color transitions (mint → gold → rose) should be gradual
+
+**Canvas Rendering:**
+1. Open DevTools → Rendering
+2. Enable "Paint flashing"
+3. Verify waveform canvas doesn't cause excessive repaints
+4. Only canvas area should flash, not entire page
+
+---
+
+### Test Haptic Feedback (Mobile/Supported Devices)
+
+**If testing on mobile device or device with vibration:**
+
+1. Press **GOAL** button (intensity 5) - should feel strong vibration
+2. Press **SAVE** button (intensity 3) - should feel medium vibration
+3. Press **FOUL** button (intensity 2) - should feel light vibration
+4. Press **ROAR** button - should feel heavy vibration
+5. Trigger chant eruption - should feel heavy vibration
+
+**Vibration Patterns:**
+- Light: Short 10ms buzz
+- Medium: 20ms buzz
+- Heavy: 30ms strong buzz
+
+---
+
+### Test Sound Effects (NEW - Week 5 Polish)
+
+**Pulse Sounds:**
+1. Press **GOAL** - should hear explosive celebration sound with crowd roar
+2. Press **SAVE** - should hear quick whistle swoosh
+3. Press **FOUL** or **CARD** - should hear warning whistle (2 blasts)
+4. Press **ROAR** - should hear massive crowd explosion with rumble
+
+**UI Sounds:**
+1. Click any form button - subtle click sound
+2. Change phase pill - click sound
+3. Open sidebar - click sound
+4. Submit seal - click sound
+
+**Chant Eruption Sound:**
+1. Trigger chant eruption (both peers join)
+2. Should hear ascending celebration tones + explosion
+3. Sound should match visual eruption overlay
+
+**Audio Fallback:**
+1. Test in browser with autoplay blocked
+2. Sounds should gracefully fail (no errors)
+3. App should remain functional
+
+---
+
+### Test Responsive Design
+
+**Desktop (1440px+):**
+1. Verify max-width centering
+2. All components should have breathing room
+3. Waveform should be large and dominant
+
+**Laptop (1024px-1439px):**
+1. Layout should scale appropriately
+2. Buttons remain comfortable to click
+3. No horizontal scrolling
+
+**Tablet (768px-1023px):**
+1. Pulse grid becomes 2 columns
+2. Chant grid becomes 2 columns
+3. Touch targets are minimum 48px
+4. Sidebars become full overlays
+
+**Mobile (320px-767px):**
+1. Everything stacks vertically
+2. Waveform adjusts height (280-400px)
+3. Buttons are large enough for thumbs (48px+)
+4. Scoreboard remains readable
+5. Forms are easy to fill on small screen
+6. Sidebar triggers become full-width buttons
+
+**Test Breakpoint Transitions:**
+1. Slowly resize browser window
+2. Layout should adapt smoothly at breakpoints
+3. No awkward middle states
+4. Text should remain readable at all sizes
+
+---
+
 ### Test Room Isolation
 
 1. Instance A creates room `CV-ABC123`
@@ -349,3 +513,239 @@ Verify:
 ---
 
 **Enjoy the roar.** 🏟️
+
+---
+
+## Deployment Guide
+
+### CURVA Desktop App (Electron)
+
+**The CURVA app is a desktop application that runs locally** using Electron. It is NOT deployed to a web server. Users download and run it on their machine.
+
+**Distribution Options:**
+
+1. **Development Mode** (current):
+   ```bash
+   cd apps/curva
+   npm run dev
+   ```
+   - Runs Vite dev server + Electron
+   - Hot reload for development
+   - Not for end users
+
+2. **Production Build** (for testing):
+   ```bash
+   cd apps/curva
+   npm run build    # Build React app to dist/
+   npm start        # Run Electron with production bundle
+   ```
+   - Uses optimized production bundle
+   - No dev server
+   - Test before packaging
+
+3. **Packaged Executable** (for distribution):
+   To distribute to users, you need to package the Electron app into a native executable:
+
+   **Recommended: electron-builder**
+   ```bash
+   npm install --save-dev electron-builder
+   ```
+
+   Add to `package.json`:
+   ```json
+   {
+     "build": {
+       "appId": "com.curva.app",
+       "productName": "CURVA",
+       "directories": {
+         "output": "release"
+       },
+       "files": [
+         "dist/**/*",
+         "electron/**/*",
+         "workers/**/*"
+       ],
+       "win": {
+         "target": "nsis"
+       },
+       "mac": {
+         "target": "dmg"
+       },
+       "linux": {
+         "target": "AppImage"
+       }
+     }
+   }
+   ```
+
+   Add script:
+   ```json
+   "scripts": {
+     "package": "npm run build && electron-builder"
+   }
+   ```
+
+   Package:
+   ```bash
+   npm run package
+   ```
+
+   Output: `release/` folder with installers for your platform
+
+4. **Distribution Channels**:
+   - GitHub Releases (upload installers)
+   - Direct download from landing page
+   - Microsoft Store (Windows)
+   - Mac App Store (macOS, requires Apple Developer account)
+   - Snapcraft (Linux)
+
+**Important Notes:**
+- CURVA is P2P - no backend server to deploy
+- Users connect directly via Hyperswarm DHT
+- Each installation stores data locally in `curva-data/`
+
+---
+
+### Landing Page (Next.js Static Site)
+
+**The landing page IS deployed to the web** to promote and explain the app.
+
+**Deployment to Vercel** (Recommended):
+
+1. **Prerequisites**:
+   - GitHub account with this repo pushed
+   - Vercel account (free tier works)
+
+2. **Vercel Dashboard**:
+   - Go to https://vercel.com/new
+   - Import your GitHub repository
+   - Configure:
+     - **Framework Preset**: Next.js
+     - **Root Directory**: `apps/landing`
+     - **Build Command**: `npm run build`
+     - **Output Directory**: `.next` (auto-detected)
+   - Click "Deploy"
+
+3. **Automatic Deployments**:
+   - Every push to `main` branch auto-deploys
+   - Pull requests get preview deployments
+   - Custom domain: Add in Vercel project settings
+
+4. **Alternative: Static Export**:
+   Update `apps/landing/next.config.ts`:
+   ```typescript
+   const nextConfig = {
+     output: 'export',
+     images: {
+       unoptimized: true
+     }
+   }
+   ```
+
+   Build:
+   ```bash
+   cd apps/landing
+   npm run build
+   ```
+
+   Deploy `out/` folder to:
+   - Netlify
+   - GitHub Pages
+   - Cloudflare Pages
+   - Any static host
+
+5. **Environment Variables** (if needed):
+   - Add in Vercel dashboard → Settings → Environment Variables
+   - Example: `NEXT_PUBLIC_APP_DOWNLOAD_URL`
+
+**Landing Page URL Example**:
+- Vercel: `https://curva.vercel.app`
+- Custom: `https://curva.football` (configure in Vercel)
+
+**Content for Landing**:
+- Hero: "Peer-to-peer matchday stands"
+- Features: Pulse, Chants, Seals, Capsules
+- Download button → GitHub Releases page
+- Tech showcase: Hyperswarm, Hypercore, P2P
+
+---
+
+## Testing Checklist Summary
+
+Before considering CURVA production-ready, verify:
+
+### Core Functionality
+- [ ] Two peers can discover and connect via room code
+- [ ] Pulse events sync in real-time
+- [ ] Energy meter updates on both instances
+- [ ] Chants erupt when peers align
+- [ ] Seals are immutable and persist
+- [ ] Capsule key can be copied and is consistent
+- [ ] Phase changes sync across peers
+
+### UI/UX (Week 5 Polish)
+- [ ] All sounds play correctly
+- [ ] Haptic feedback works (on supported devices)
+- [ ] Keyboard navigation works throughout
+- [ ] Focus indicators are visible
+- [ ] Skip to main content link works
+- [ ] Screen readers announce content
+- [ ] Reduced motion is respected
+
+### Performance
+- [ ] Animations run at 60fps
+- [ ] No frame drops during interactions
+- [ ] Waveform runs smoothly for extended periods
+- [ ] CPU/memory usage is reasonable
+- [ ] App remains responsive under load
+
+### Responsive
+- [ ] Works on desktop (1440px+)
+- [ ] Works on laptop (1024-1439px)
+- [ ] Works on tablet (768-1023px)
+- [ ] Works on mobile (320-767px)
+- [ ] All touch targets minimum 48px on mobile
+
+### Production Build
+- [ ] `npm run build` succeeds without errors
+- [ ] `npm start` runs production bundle
+- [ ] All features work in production mode
+- [ ] No dev warnings in console
+
+### Cross-Platform
+- [ ] Tested on Windows
+- [ ] Tested on macOS
+- [ ] Tested on Linux (optional)
+
+### Edge Cases
+- [ ] Peer disconnects gracefully
+- [ ] Invalid room code shows error
+- [ ] Expired chants are cleaned up
+- [ ] Can't seal twice in same room
+- [ ] Room isolation works correctly
+
+---
+
+## Where is Everything?
+
+**Local Development**:
+- CURVA app: Runs at `http://localhost:5173` (Vite) → Electron window
+- Landing: Runs at `http://localhost:3000` (Next.js dev server)
+
+**Production**:
+- CURVA app: Packaged as native executable (Windows .exe, Mac .dmg, Linux AppImage)
+- Landing: Deployed to Vercel at your custom domain
+
+**Data Storage**:
+- User data: `apps/curva/curva-data/identity/` (Hypercore)
+- Match capsules: `apps/curva/curva-data/capsule-CV-XXXXXX/` (per room)
+- Electron cache: OS-specific app data directory
+
+**Network**:
+- P2P connections: Hyperswarm DHT (public BitTorrent DHT nodes)
+- No central server
+- No telemetry or tracking
+
+---
+
+**Ready to roar?** Follow the guide above to test every aspect of CURVA! 🏟️⚡

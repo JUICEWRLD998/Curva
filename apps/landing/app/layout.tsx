@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'CURVA — P2P Matchday Stands',
+  title: 'CURVAX — P2P Matchday Stands',
   description:
-    'Peer-to-peer stadium stands for football fans. Hyperswarm pulse, chant circles, prediction seals, match capsules. Built on the Pears stack for the Tether Developers Cup.'
+    'True peer-to-peer stadium experience for football fans worldwide. Live pulse, synchronized chants, cryptographic prediction seals, and immortal match capsules. Built on Hyperswarm and Hypercore for the Tether Developers Cup Pears track.'
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
